@@ -24,7 +24,11 @@
         android:name="vn.edu.dlu.ctk47.techmate.CompareFragment"
         android:label="Compare" />
 
-    <!-- Fragment giữ chỗ cho Profile -->
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="vn.edu.dlu.ctk47.techmate.CheckoutFragment"
+        android:label="Checkout" />
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="vn.edu.dlu.ctk47.techmate.HomeFragment"

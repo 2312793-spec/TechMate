@@ -3,7 +3,6 @@ package vn.edu.dlu.ctk47.techmate;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +13,8 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
-    private List<CartItem> list;
-    private OnCartChange listener;
+    private final List<CartItem> list;
+    private final OnCartChange listener;
 
     // Constructor
     public CartAdapter(List<CartItem> list, OnCartChange listener) {
@@ -39,9 +38,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         h.txtPrice.setText("$" + item.product.price);
         h.txtQty.setText(String.valueOf(item.quantity));
 
-        // ➕
+        // ➕ Tăng số lượng
         h.btnPlus.setOnClickListener(v -> {
-            int pos = h.getBindingAdapterPosition();
+            // Sử dụng getAdapterPosition() để tương thích tốt hơn
+            int pos = h.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {
                 list.get(pos).quantity++;
                 notifyItemChanged(pos);
@@ -49,9 +49,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             }
         });
 
-        // ➖
+        // ➖ Giảm số lượng
         h.btnMinus.setOnClickListener(v -> {
-            int pos = h.getBindingAdapterPosition();
+            int pos = h.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {
                 if (list.get(pos).quantity > 1) {
                     list.get(pos).quantity--;
@@ -61,12 +61,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             }
         });
 
-        // ❌
+        // ❌ Xóa sản phẩm khỏi giỏ hàng
         h.btnDelete.setOnClickListener(v -> {
-            int pos = h.getBindingAdapterPosition();
+            int pos = h.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {
+                // 1. Xóa trong CartManager
                 CartManager.remove(pos);
+
+                // 2. Thông báo xóa item tại vị trí đó
                 notifyItemRemoved(pos);
+
+                // 3. Cập nhật lại dải vị trí để tránh crash IndexOutOfBoundsException
+                notifyItemRangeChanged(pos, list.size());
+
+                // 4. Cập nhật tổng tiền ở UI
                 notifyTotal();
             }
         });
@@ -74,12 +82,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list != null ? list.size() : 0;
     }
 
-    // ViewHolder
-    static class ViewHolder extends RecyclerView.ViewHolder {
-
+    // Fixed Warning: Added 'public' to match Adapter visibility scope
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName, txtPrice, txtQty;
         ImageView img, btnDelete;
         TextView btnPlus, btnMinus;
@@ -96,7 +103,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         }
     }
 
-    // Callback để update total
     public interface OnCartChange {
         void onChange();
     }
