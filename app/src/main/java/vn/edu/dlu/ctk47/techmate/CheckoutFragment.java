@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class CheckoutFragment extends Fragment {
     EditText edtName, edtPhone, edtEmail, edtAddress, edtNote;
     TextView txtTotal;
     Button btnSubmit;
+    ImageView btnBack;
     LinearLayout layoutBankInfo;
 
     // Cờ trạng thái: false = Đang điền form, true = Đang đợi bấm xác nhận CK
@@ -38,6 +40,11 @@ public class CheckoutFragment extends Fragment {
 
         initViews(view);
         setupTotal(); // Hiển thị tổng tiền từ giỏ hàng
+
+        // Sự kiện quay lại giỏ hàng
+        btnBack.setOnClickListener(v -> {
+            Navigation.findNavController(v).popBackStack();
+        });
 
         btnSubmit.setOnClickListener(v -> {
             if (!isWaitingForPayment) {
@@ -80,6 +87,7 @@ public class CheckoutFragment extends Fragment {
         edtNote = view.findViewById(R.id.edtNote);
         txtTotal = view.findViewById(R.id.txtCheckoutTotal);
         btnSubmit = view.findViewById(R.id.btnSubmitCheckout);
+        btnBack = view.findViewById(R.id.btnBackCheckout);
         layoutBankInfo = view.findViewById(R.id.layoutBankInfo);
     }
 

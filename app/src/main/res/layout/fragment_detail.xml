@@ -20,7 +20,7 @@
             <!-- IMAGE SLIDER -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="320dp"
                 android:background="@android:color/white">
 
                 <androidx.viewpager2.widget.ViewPager2
@@ -28,15 +28,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+                <!-- Refined Tab Indicator (Dots) -->
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabIndicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:color/transparent"
                     app:tabBackground="@drawable/dot_selector"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
-                    app:tabMaxWidth="12dp"
+                    app:tabMaxWidth="10dp"
+                    app:tabPaddingStart="4dp"
+                    app:tabPaddingEnd="4dp"
                     app:tabRippleColor="@null" />
             </FrameLayout>
 
@@ -62,12 +67,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="$0.00"
-                    android:textColor="#D70018"
+                    android:textColor="@color/primary"
                     android:textSize="22sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- VARIANTS SECTION (DYNAMIC) -->
+            <!-- VARIANTS SECTION -->
             <LinearLayout
                 android:id="@+id/sectionVariants"
                 android:layout_width="match_parent"
@@ -93,7 +98,7 @@
                     android:orientation="horizontal" />
             </LinearLayout>
 
-            <!-- COLORS SECTION (DYNAMIC) -->
+            <!-- COLORS SECTION -->
             <LinearLayout
                 android:id="@+id/sectionColors"
                 android:layout_width="match_parent"
@@ -188,6 +193,20 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Floating Back Button -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_back_floating"
+        android:elevation="6dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_back"
+        app:tint="@color/primary"
+        android:clickable="true"
+        android:focusable="true" />
+
     <LinearLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
@@ -206,14 +225,14 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tạm tính:" android:textColor="#666666" android:textSize="12sp" />
-            <TextView android:id="@+id/txtBottomPrice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textColor="#D70018" android:textSize="18sp" android:textStyle="bold" />
+            <TextView android:id="@+id/txtBottomPrice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textColor="@color/primary" android:textSize="18sp" android:textStyle="bold" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="#D70018"
+            android:backgroundTint="@color/primary"
             android:paddingHorizontal="32dp"
             android:text="MUA NGAY"
             android:textColor="#FFFFFF"

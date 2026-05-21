@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class DetailFragment extends Fragment {
     private ViewPager2 viewPagerImage;
     private TabLayout tabIndicator;
     private Button btnAdd;
+    private ImageView btnBack;
     private Product product;
 
     @Override
@@ -67,6 +69,7 @@ public class DetailFragment extends Fragment {
         txtSpecRAM = view.findViewById(R.id.txtSpecRAM);
         
         btnAdd = view.findViewById(R.id.btnAdd);
+        btnBack = view.findViewById(R.id.btnBack);
 
         // 2. Nhận ID sản phẩm từ Bundle
         Bundle bundle = getArguments();
@@ -77,7 +80,12 @@ public class DetailFragment extends Fragment {
             }
         }
 
-        // 3. Sự kiện MUA NGAY
+        // 3. Sự kiện Back
+        btnBack.setOnClickListener(v -> {
+            Navigation.findNavController(v).popBackStack();
+        });
+
+        // 4. Sự kiện MUA NGAY
         btnAdd.setOnClickListener(v -> {
             if (product != null) {
                 CartManager.add(product);

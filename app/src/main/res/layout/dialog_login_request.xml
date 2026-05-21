@@ -42,9 +42,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Đăng ký"
-            android:textColor="#D70018"
+            android:textColor="@color/primary"
             android:backgroundTint="@color/white"
-            android:strokeColor="#D70018"
+            android:strokeColor="@color/primary"
             android:strokeWidth="1"
             android:layout_marginEnd="5dp"/>
 
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Đăng nhập"
-            android:backgroundTint="#D70018"
+            android:backgroundTint="@color/primary"
             android:textColor="@color/white"
             android:layout_marginStart="5dp"/>
     </LinearLayout>
