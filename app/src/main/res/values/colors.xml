@@ -1,11 +1,13 @@
 <resources>
-
-    <!-- Primary -->
+    <!-- Main Theme: Mint Green & White -->
     <color name="primary">#28C8BE</color>
-    <color name="primary_dark">#1E40AF</color>
+    <color name="primary_dark">#1FA59D</color>
+    <color name="primary_light">#E0F7F6</color>
+    <color name="mint_gradient_start">#B2F2ED</color>
+    <color name="mint_gradient_end">#FFFFFF</color>
 
     <!-- Background -->
-    <color name="bg">#F5F7FA</color>
+    <color name="bg">#F8F9FA</color>
     <color name="white">#FFFFFF</color>
 
     <!-- Card Background -->
@@ -14,23 +16,19 @@
     <!-- Text -->
     <color name="text_primary">#1F2937</color>
     <color name="text_secondary">#6B7280</color>
+    <color name="text_mint">#28C8BE</color>
 
-    <!-- Accent -->
-    <color name="green">#10B981</color>
-    <color name="red">#EF4444</color>
-    <color name="header_red">#D32F2F</color>
-    <color name="login_btn_bg">#40FFFFFF</color>
-
-    <!-- Chip -->
-    <color name="chip_bg">#E5E7EB</color>
-
-    <!-- Divider -->
+    <!-- UI Elements -->
+    <color name="star_gold">#FFB800</color>
     <color name="divider">#E2E8F0</color>
 
+    <!-- Fix Build Errors: Các màu này phải tồn tại để lớp R được tạo ra -->
+    <color name="login_btn_bg">#40FFFFFF</color>
+    <color name="login_otn_bg">#40FFFFFF</color>
+    <color name="header_red">#28C8BE</color>
     <color name="splash_bg">#28C8BE</color>
+    <color name="nav_color_normal">#9CA3AF</color>
 
-    <!-- Fixed Colors -->
     <color name="black">#000000</color>
-
-
+    <color name="red">#EF4444</color>
 </resources>
