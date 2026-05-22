@@ -42,11 +42,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+                <!-- SỬ DỤNG LOGO.PNG TRONG Ô XANH -->
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/logo_tm"
-                    android:scaleType="centerInside" />
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:src="@drawable/logo"
+                    android:background="@drawable/bg_logo_box"
+                    android:padding="6dp"
+                    android:scaleType="fitCenter" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -58,12 +61,16 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/btnProfile"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_person_outline"
-                app:tint="@color/text_primary" />
+                app:tint="@color/text_primary"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless" />
         </RelativeLayout>
 
         <androidx.core.widget.NestedScrollView

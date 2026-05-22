@@ -1,11 +1,15 @@
 package vn.edu.dlu.ctk47.techmate;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,11 +22,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import kotlin.Unit;
+import vn.edu.dlu.ctk47.techmate.firebase.AuthRepository;
 import vn.edu.dlu.ctk47.techmate.model.Brand;
 import vn.edu.dlu.ctk47.techmate.model.Category;
 import vn.edu.dlu.ctk47.techmate.model.Product;
@@ -30,7 +37,7 @@ import vn.edu.dlu.ctk47.techmate.firebase.ProductRepository;
 
 public class HomeFragment extends Fragment {
 
-    private ImageView btnCompareFloat;
+    private ImageView btnCompareFloat, btnProfile;
     private RecyclerView rvCat, rvBrand, rvProd;
     private EditText edtSearch;
     
@@ -55,6 +62,7 @@ public class HomeFragment extends Fragment {
 
         // 1. Ánh xạ View
         btnCompareFloat = view.findViewById(R.id.btnCompareFloat);
+        btnProfile = view.findViewById(R.id.btnProfile);
         rvCat = view.findViewById(R.id.rvCategories);
         rvBrand = view.findViewById(R.id.rvBrands);
         rvProd = view.findViewById(R.id.rvProducts);
@@ -63,6 +71,15 @@ public class HomeFragment extends Fragment {
         setupRecyclerViews(view);
         setupSearch();
         loadData();
+
+        // 2. Xử lý click vào biểu tượng Profile
+        btnProfile.setOnClickListener(v -> {
+            if (AuthRepository.INSTANCE.getCurrentUser() == null) {
+                showLoginRequestDialog();
+            } else {
+                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_profileFragment);
+            }
+        });
 
         btnCompareFloat.setOnClickListener(v -> {
             if (CompareManager.get().size() < 2) {
@@ -73,20 +90,74 @@ public class HomeFragment extends Fragment {
         });
 
         updateCompareUI();
+        updateProfileIcon();
+    }
+
+    private void showLoginRequestDialog() {
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_login_request);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        Button btnLogin = dialog.findViewById(R.id.btnLoginNav);
+        Button btnRegister = dialog.findViewById(R.id.btnRegisterNav);
+        View btnClose = dialog.findViewById(R.id.btnClose);
+
+        btnLogin.setOnClickListener(v -> {
+            dialog.dismiss();
+            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_loginFragment);
+        });
+
+        btnRegister.setOnClickListener(v -> {
+            dialog.dismiss();
+            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_registerFragment);
+        });
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
+
+    private void updateProfileIcon() {
+        if (AuthRepository.INSTANCE.getCurrentUser() != null) {
+            AuthRepository.INSTANCE.getUserProfile(AuthRepository.INSTANCE.getCurrentUser().getUid(), user -> {
+                if (user != null && user.getAvatar() != null && !user.getAvatar().isEmpty() && isAdded()) {
+                    Glide.with(this)
+                            .load(user.getAvatar())
+                            .placeholder(R.drawable.ic_person_outline)
+                            .circleCrop()
+                            .into(btnProfile);
+                }
+                return null;
+            });
+        } else {
+            btnProfile.setImageResource(R.drawable.ic_person_outline);
+        }
     }
 
     private void setupRecyclerViews(View view) {
         // Categories
         rvCat.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(categoryList, category -> {
-            filterByCategory(category.getId());
+            if (category == null) {
+                updateProductDisplay(allProducts);
+            } else {
+                brandAdapter.clearSelection(); // Bỏ chọn bên Brand
+                filterByCategory(category.getId());
+            }
         });
         rvCat.setAdapter(categoryAdapter);
 
         // Brands
         rvBrand.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         brandAdapter = new BrandAdapter(brandList, brand -> {
-            filterByBrand(brand.getId());
+            if (brand == null) {
+                updateProductDisplay(allProducts);
+            } else {
+                categoryAdapter.clearSelection(); // Bỏ chọn bên Category
+                filterByBrand(brand.getId());
+            }
         });
         rvBrand.setAdapter(brandAdapter);
 
@@ -128,7 +199,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadData() {
-        // Load Categories
         ProductRepository.INSTANCE.getCategories(categories -> {
             if (isAdded()) {
                 requireActivity().runOnUiThread(() -> {
@@ -140,7 +210,6 @@ public class HomeFragment extends Fragment {
             return Unit.INSTANCE;
         });
 
-        // Load Brands
         ProductRepository.INSTANCE.getBrands(brands -> {
             if (isAdded()) {
                 requireActivity().runOnUiThread(() -> {
@@ -152,7 +221,6 @@ public class HomeFragment extends Fragment {
             return Unit.INSTANCE;
         });
 
-        // Load Products
         ProductRepository.INSTANCE.getProducts(products -> {
             if (isAdded()) {
                 requireActivity().runOnUiThread(() -> {
@@ -216,5 +284,6 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateCompareUI();
+        updateProfileIcon();
     }
 }

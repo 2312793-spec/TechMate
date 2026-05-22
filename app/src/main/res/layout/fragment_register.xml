@@ -8,12 +8,16 @@
     android:orientation="vertical"
     android:padding="24dp">
 
+    <!-- SỬ DỤNG LOGO.PNG TRONG Ô XANH -->
     <ImageView
         android:id="@+id/logo"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/logo_tm" />
+        android:background="@drawable/bg_logo_box"
+        android:padding="12dp"
+        android:src="@drawable/logo"
+        android:scaleType="fitCenter" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,7 +64,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="Email"
             android:textColor="@color/text_primary"
             android:textStyle="bold" />
@@ -79,7 +82,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="Mật khẩu"
             android:textColor="@color/text_primary"
             android:textStyle="bold" />
