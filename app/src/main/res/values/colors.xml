@@ -22,9 +22,9 @@
     <color name="star_gold">#FFB800</color>
     <color name="divider">#E2E8F0</color>
 
-    <!-- Fix Build Errors: Các màu này phải tồn tại để lớp R được tạo ra -->
+    <!-- Fix Build Errors: Đảm bảo các tên này tồn tại để lớp R được tạo ra khi clone -->
     <color name="login_btn_bg">#40FFFFFF</color>
-    <color name="login_otn_bg">#40FFFFFF</color>
+    <color name="login_otn_bg">#40FFFFFF</color> 
     <color name="header_red">#28C8BE</color>
     <color name="splash_bg">#28C8BE</color>
     <color name="nav_color_normal">#9CA3AF</color>

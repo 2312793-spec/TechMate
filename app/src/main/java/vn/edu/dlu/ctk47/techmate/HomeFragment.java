@@ -92,15 +92,24 @@ public class HomeFragment extends Fragment {
 
         // Products
         rvProd.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        productAdapter = new ProductAdapter(displayList, product -> {
-            if (CompareManager.hasOne()) {
-                CompareManager.add(product);
-                Navigation.findNavController(view).navigate(R.id.compareFragment);
-                return;
+        productAdapter = new ProductAdapter(displayList, new ProductAdapter.OnProductListener() {
+            @Override
+            public void onClick(Product product) {
+                if (CompareManager.hasOne()) {
+                    CompareManager.add(product);
+                    Navigation.findNavController(view).navigate(R.id.compareFragment);
+                    return;
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("id", product.getId());
+                Navigation.findNavController(view).navigate(R.id.detailFragment, bundle);
             }
-            Bundle bundle = new Bundle();
-            bundle.putString("id", product.getId());
-            Navigation.findNavController(view).navigate(R.id.detailFragment, bundle);
+
+            @Override
+            public void onAddToCart(Product product) {
+                CartManager.add(product);
+                Toast.makeText(getContext(), "Đã thêm " + product.getName() + " vào giỏ hàng", Toast.LENGTH_SHORT).show();
+            }
         });
         rvProd.setAdapter(productAdapter);
     }

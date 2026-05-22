@@ -19,13 +19,14 @@ import vn.edu.dlu.ctk47.techmate.model.Product;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private final List<Product> list;
-    private final OnItemClick listener;
+    private final OnProductListener listener;
 
-    public interface OnItemClick {
+    public interface OnProductListener {
         void onClick(Product product);
+        void onAddToCart(Product product);
     }
 
-    public ProductAdapter(List<Product> list, OnItemClick listener) {
+    public ProductAdapter(List<Product> list, OnProductListener listener) {
         this.list = list;
         this.listener = listener;
     }
@@ -54,6 +55,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
 
         holder.itemView.setOnClickListener(v -> listener.onClick(p));
+        holder.btnAddToCart.setOnClickListener(v -> listener.onAddToCart(p));
     }
 
     @Override
@@ -64,13 +66,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView imgProduct;
         final TextView txtName, txtPrice;
+        final View btnAddToCart;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
-            // Sửa lại ID cho đúng với item_product.xml
             txtName = itemView.findViewById(R.id.txtName);
             txtPrice = itemView.findViewById(R.id.txtPrice);
+            btnAddToCart = itemView.findViewById(R.id.btnAddToCartMini);
         }
     }
 }

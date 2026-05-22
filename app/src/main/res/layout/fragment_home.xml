@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="12dp">
 
             <LinearLayout
@@ -43,10 +43,10 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:src="@drawable/logo_tm"
-                    app:tint="@color/primary" />
+                    android:scaleType="centerInside" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,28 +76,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- 3. SEARCH BAR -->
+                <!-- 3. PREMIUM SEARCH BAR -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingBottom="16dp"
-                    android:paddingHorizontal="16dp">
+                    android:paddingBottom="20dp"
+                    android:paddingHorizontal="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="52dp"
                         android:background="@drawable/bg_search_premium"
-                        android:elevation="6dp"
+                        android:elevation="4dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
+                        android:paddingHorizontal="20dp"
+                        android:outlineProvider="background">
 
                         <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/bg_search"
-                            app:tint="@color/text_secondary" />
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_search"
+                            app:tint="@color/text_secondary"
+                            android:alpha="0.5"/>
 
                         <EditText
                             android:id="@+id/edtSearch"
@@ -106,7 +108,12 @@
                             android:layout_marginStart="12dp"
                             android:background="@android:color/transparent"
                             android:hint="Bạn muốn mua gì hôm nay?"
-                            android:textSize="15sp" />
+                            android:textColorHint="@color/text_secondary"
+                            android:textColor="@color/text_primary"
+                            android:textSize="15sp"
+                            android:textCursorDrawable="@drawable/cursor_primary"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -138,54 +145,18 @@
                 <!-- 5. HERO BANNER -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="180dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="16dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="8dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp">
 
                     <ImageView
                         android:id="@+id/imgBanner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/img_iphone_15_pro" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#1A000000"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="24dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="SALE UP TO 50%"
-                            android:textColor="@color/white"
-                            android:textSize="26sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:text="Điện thoại chính hãng - Giá tốt nhất"
-                            android:textColor="@color/white"
-                            android:textSize="13sp" />
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="16dp"
-                            android:backgroundTint="@color/primary"
-                            android:paddingHorizontal="24dp"
-                            android:text="MUA NGAY"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                        android:scaleType="fitXY"
+                        android:src="@drawable/banner" />
                 </androidx.cardview.widget.CardView>
 
                 <!-- 6. PRODUCT GRID AREA -->
@@ -211,7 +182,7 @@
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
-    <!-- NÚT SO SÁNH NỔI (btnCompareFloat) ĐƯỢC THÊM LẠI -->
+    <!-- NÚT SO SÁNH NỔI -->
     <ImageView
         android:id="@+id/btnCompareFloat"
         android:layout_width="56dp"
@@ -219,7 +190,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
         android:background="@drawable/bg_circle"
-        android:elevation="10dp"
+        android:elevation="8dp"
         android:padding="14dp"
         android:src="@drawable/ic_compare"
         app:tint="@color/primary"
