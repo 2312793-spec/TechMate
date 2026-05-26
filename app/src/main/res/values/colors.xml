@@ -1,11 +1,13 @@
 <resources>
-
-    <!-- Primary -->
-    <color name="primary">#28C8BE</color>
-    <color name="primary_dark">#1E40AF</color>
+    <!-- Main Theme: Mint Green & White -->
+    <color name="primary">#2EC4B6</color>
+    <color name="primary_dark">#219187</color>
+    <color name="primary_light">#EAF9F8</color>
+    <color name="mint_gradient_start">#B2F2ED</color>
+    <color name="mint_gradient_end">#FFFFFF</color>
 
     <!-- Background -->
-    <color name="bg">#F5F7FA</color>
+    <color name="bg">#F8F9FA</color>
     <color name="white">#FFFFFF</color>
 
     <!-- Card Background -->
@@ -14,23 +16,34 @@
     <!-- Text -->
     <color name="text_primary">#1F2937</color>
     <color name="text_secondary">#6B7280</color>
+    <color name="text_mint">#2EC4B6</color>
 
-    <!-- Accent -->
-    <color name="green">#10B981</color>
-    <color name="red">#EF4444</color>
-    <color name="header_red">#D32F2F</color>
-    <color name="login_btn_bg">#40FFFFFF</color>
-
-    <!-- Chip -->
-    <color name="chip_bg">#E5E7EB</color>
-
-    <!-- Divider -->
+    <!-- UI Elements -->
+    <color name="star_gold">#FFB800</color>
     <color name="divider">#E2E8F0</color>
 
-    <color name="splash_bg">#28C8BE</color>
+    <!--  Đảm bảo các tên này tồn tại để lớp R được tạo ra khi clone -->
+    <color name="login_btn_bg">#40FFFFFF</color>
+    <color name="login_otn_bg">#40FFFFFF</color>
+    <color name="header_red">#2EC4B6</color>
+    <color name="splash_bg">#2EC4B6</color>
+    <color name="nav_color_normal">#9CA3AF</color>
 
-    <!-- Fixed Colors -->
     <color name="black">#000000</color>
-
-
+    <color name="red">#EF4444</color>
+    <!-- Badge trạng thái -->
+    <color name="status_pending_text">#E67E22</color>
+    <color name="status_pending_bg">#FEF3E2</color>
+    <color name="status_processing_text">#2980B9</color>
+    <color name="status_processing_bg">#EBF5FB</color>
+    <color name="status_shipping_text">#8E44AD</color>
+    <color name="status_shipping_bg">#F5EEF8</color>
+    <color name="status_done_text">#27AE60</color>
+    <color name="status_done_bg">#E9F7EF</color>
+    <color name="status_cancelled_text">#E74C3C</color>
+    <color name="status_cancelled_bg">#FDEDEC</color>
+    <color name="teal_primary">#2EC4B6</color>
+    <color name="bg_page">#F4F6F8</color>
+    <color name="teal_light">#EAF9F8</color>
+    <color name="teal_dark">#219187</color>
 </resources>

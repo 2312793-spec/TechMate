@@ -43,45 +43,44 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             h.txtPrice.setText(String.format(Locale.getDefault(), "$%.2f", item.getProduct().getPrice()));
             h.txtQty.setText(String.valueOf(item.getQuantity()));
 
-            // Glide load image
             if (item.getProduct().getImages() != null && !item.getProduct().getImages().isEmpty()) {
                 Glide.with(h.itemView.getContext())
                         .load(item.getProduct().getImages().get(0))
                         .placeholder(R.drawable.logo)
                         .into(h.img);
             }
-
-            h.btnPlus.setOnClickListener(v -> {
-                int pos = h.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    CartItem currentItem = list.get(pos);
-                    currentItem.setQuantity(currentItem.getQuantity() + 1);
-                    notifyItemChanged(pos);
-                    notifyTotal();
-                }
-            });
-
-            h.btnMinus.setOnClickListener(v -> {
-                int pos = h.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    CartItem currentItem = list.get(pos);
-                    if (currentItem.getQuantity() > 1) {
-                        currentItem.setQuantity(currentItem.getQuantity() - 1);
-                        notifyItemChanged(pos);
-                        notifyTotal();
-                    }
-                }
-            });
-
-            h.btnDelete.setOnClickListener(v -> {
-                int pos = h.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    CartManager.remove(pos);
-                    notifyItemRemoved(pos);
-                    notifyTotal();
-                }
-            });
         }
+
+        h.btnPlus.setOnClickListener(v -> {
+            int pos = h.getAdapterPosition();
+            if (pos == RecyclerView.NO_POSITION) return;
+            CartItem currentItem = list.get(pos);
+            if (currentItem == null) return;
+            currentItem.setQuantity(currentItem.getQuantity() + 1);
+            notifyItemChanged(pos);
+            notifyTotal();
+        });
+
+        h.btnMinus.setOnClickListener(v -> {
+            int pos = h.getAdapterPosition();
+            if (pos == RecyclerView.NO_POSITION) return;
+            CartItem currentItem = list.get(pos);
+            if (currentItem == null) return;
+            if (currentItem.getQuantity() > 1) {
+                currentItem.setQuantity(currentItem.getQuantity() - 1);
+                notifyItemChanged(pos);
+                notifyTotal();
+            }
+        });
+
+        h.btnDelete.setOnClickListener(v -> {
+            int pos = h.getAdapterPosition();
+            if (pos == RecyclerView.NO_POSITION) return;
+            CartManager.remove(pos);
+            notifyItemRemoved(pos);
+            notifyItemRangeChanged(pos, list.size());
+            notifyTotal();
+        });
     }
 
     @Override

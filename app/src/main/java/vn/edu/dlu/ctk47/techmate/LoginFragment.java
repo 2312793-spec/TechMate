@@ -41,12 +41,10 @@ public class LoginFragment extends Fragment {
         btnLogin = view.findViewById(R.id.btnLogin);
         txtSignUp = view.findViewById(R.id.txtSignUp);
 
-        // Chuyển sang màn hình Đăng ký
         txtSignUp.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
         });
 
-        // Xử lý Đăng nhập
         btnLogin.setOnClickListener(v -> {
             String email = edtEmail.getText().toString().trim();
             String password = edtPassword.getText().toString().trim();
@@ -59,8 +57,8 @@ public class LoginFragment extends Fragment {
             AuthRepository.INSTANCE.login(email, password, (success, message) -> {
                 if (success) {
                     Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    // Quay lại màn hình Profile
-                    Navigation.findNavController(view).popBackStack(R.id.profileFragment, false);
+                    // Thoát ra và quay về màn hình chính (Home)
+                    Navigation.findNavController(view).popBackStack(R.id.homeFragment, false);
                 } else {
                     Toast.makeText(getContext(), "Lỗi: " + message, Toast.LENGTH_LONG).show();
                 }

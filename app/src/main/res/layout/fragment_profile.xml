@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
+    android:background="@color/bg"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -39,7 +39,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="TÀI KHOẢN"
-                android:textColor="#666666"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
                 android:id="@+id/layoutProfileHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="@color/card"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="16dp">
@@ -71,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="MAI VĂN QUANG"
-                        android:textColor="#000000"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="maivanquang@gmail.com"
-                        android:textColor="#666666"
+                        android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
 
                     <TextView
@@ -90,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Chỉnh sửa hồ sơ  >"
-                        android:textColor="#333333"
+                        android:textColor="@color/text_primary"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -102,14 +102,14 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:text="QUẢN LÝ MUA SẮM"
-                android:textColor="#666666"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="@color/card"
                 android:orientation="vertical">
 
                 <TextView
@@ -118,10 +118,10 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:text="📦  Đơn hàng của tôi"
-                    android:textColor="#333333"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp" />
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="#E0E0E0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="@color/divider" />
 
                 <TextView
                     android:id="@+id/btnAddressBook"
@@ -129,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:text="📍  Sổ địa chỉ"
-                    android:textColor="#333333"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -140,14 +140,14 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:text="CÀI ĐẶT ỨNG DỤNG"
-                android:textColor="#666666"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="@color/card"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -159,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="🔔  Thông báo\n      Khuyến mãi, cập nhật đơn hàng"
-                        android:textColor="#333333"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp" />
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchNotif"
@@ -170,7 +170,7 @@
                         android:checked="true" />
                 </RelativeLayout>
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="#E0E0E0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="@color/divider" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -181,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="🎨  Giao diện\n      Chế độ tối (Dark Mode)"
-                        android:textColor="#333333"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp" />
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchDarkMode"
@@ -191,7 +191,7 @@
                         android:layout_centerVertical="true" />
                 </RelativeLayout>
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="#E0E0E0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="@color/divider" />
 
                 <RelativeLayout
                     android:id="@+id/btnLanguage"
@@ -203,7 +203,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="🌐  Ngôn ngữ"
-                        android:textColor="#333333"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -211,7 +211,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:text="Tiếng Việt  >"
-                        android:textColor="#666666" />
+                        android:textColor="@color/text_secondary" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -222,14 +222,14 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:text="HỖ TRỢ &amp; THÔNG TIN"
-                android:textColor="#666666"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="@color/card"
                 android:orientation="vertical">
 
                 <TextView
@@ -238,10 +238,10 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:text="📞  Trung tâm trợ giúp"
-                    android:textColor="#333333"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp" />
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="#E0E0E0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="@color/divider" />
 
                 <TextView
                     android:id="@+id/btnPrivacyPolicy"
@@ -249,10 +249,10 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:text="⚖️  Chính sách bảo mật &amp; Đổi trả"
-                    android:textColor="#333333"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp" />
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="#E0E0E0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="16dp" android:background="@color/divider" />
 
                 <RelativeLayout
                     android:id="@+id/btnAbout"
@@ -264,7 +264,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="ℹ️  Về TechMate"
-                        android:textColor="#333333"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -272,7 +272,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:text="Phiên bản v1.2.3"
-                        android:textColor="#666666" />
+                        android:textColor="@color/text_secondary" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -281,7 +281,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="16dp"
-                android:backgroundTint="#D70018"
+                android:backgroundTint="@color/primary"
                 android:text="ĐĂNG XUẤT"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />

@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.swiperefreshlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation("androidx.core:core-splashscreen:1.0.1")

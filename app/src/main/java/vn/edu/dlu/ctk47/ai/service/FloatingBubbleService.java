@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -21,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import vn.edu.dlu.ctk47.techmate.BuildConfig;
 import vn.edu.dlu.ctk47.techmate.R;
 import vn.edu.dlu.ctk47.ai.api.AiApiClient;
 import vn.edu.dlu.ctk47.ai.api.AiApiService;
@@ -45,6 +50,7 @@ public class FloatingBubbleService extends Service {
 
     private RecyclerView recyclerView;
     private ChatAdapter adapter;
+    private ImageButton btnSend;
     private static List<ChatMessage> messageList = new ArrayList<>();
     private Context themedContext;
 
@@ -159,15 +165,11 @@ public class FloatingBubbleService extends Service {
             adapter = new ChatAdapter(messageList);
             recyclerView.setLayoutManager(new LinearLayoutManager(themedContext));
             recyclerView.setAdapter(adapter);
-
-            if (messageList.isEmpty()) {
-                addMessage("TechMate xin chào, quý khách có gì thắc mắc ạ?", true);
-            }
         }
 
         chatWindowView.findViewById(R.id.btn_close).setOnClickListener(v -> toggleChatWindow());
 
-        ImageButton btnSend = chatWindowView.findViewById(R.id.btn_send);
+        btnSend = chatWindowView.findViewById(R.id.btn_send);
         EditText etMessage = chatWindowView.findViewById(R.id.et_message);
 
         if (btnSend != null && etMessage != null) {
@@ -180,6 +182,40 @@ public class FloatingBubbleService extends Service {
                 }
             });
         }
+
+        if (messageList.isEmpty()) {
+            checkServerAndInit();
+        }
+    }
+
+    // Kiểm tra server trước khi mở chat — chạy nền, không block UI
+    private void checkServerAndInit() {
+        if (btnSend != null) btnSend.setEnabled(false);
+
+        new Thread(() -> {
+            boolean reachable = false;
+            try {
+                URL url = new URL(BuildConfig.AI_SERVER_URL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setConnectTimeout(5000);
+                conn.setReadTimeout(5000);
+                conn.setRequestMethod("GET");
+                conn.connect();
+                reachable = conn.getResponseCode() > 0;
+                conn.disconnect();
+            } catch (Exception ignored) {}
+
+            final boolean serverOk = reachable;
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (serverOk) {
+                    addMessage("TechMate xin chào, quý khách có gì thắc mắc ạ?", true);
+                    if (btnSend != null) btnSend.setEnabled(true);
+                } else {
+                    addMessage("Server AI hiện chưa hoạt động. Vui lòng thử lại sau.", true);
+                    // btnSend giữ nguyên trạng thái disabled để tránh user gửi tin khi server tắt
+                }
+            });
+        }).start();
     }
 
     private void addMessage(String text, boolean isAi) {
@@ -203,7 +239,6 @@ public class FloatingBubbleService extends Service {
             @Override
             public void onResponse(Call<AiChatResponse> call, Response<AiChatResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // ĐÃ ĐỒNG BỘ: Sử dụng hàm getAnswer() an toàn thay vì getReply()
                     addMessage(response.body().getAnswer(), true);
                 } else {
                     String errorDetail = "Lỗi Server (" + response.code() + ")";
@@ -212,9 +247,14 @@ public class FloatingBubbleService extends Service {
                     addMessage(errorDetail, true);
                 }
             }
+
             @Override
             public void onFailure(Call<AiChatResponse> call, Throwable t) {
-                addMessage("Lỗi kết nối: " + t.getMessage(), true);
+                if (t instanceof java.net.ConnectException || t instanceof java.net.SocketTimeoutException) {
+                    addMessage("Server AI hiện chưa hoạt động. Vui lòng thử lại sau.", true);
+                } else {
+                    addMessage("Lỗi kết nối. Vui lòng kiểm tra mạng và thử lại.", true);
+                }
             }
         });
     }

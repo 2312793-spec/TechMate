@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,11 +75,25 @@ public class CartFragment extends Fragment {
                         // Hiển thị tối đa 6 sản phẩm đầu tiên làm gợi ý
                         List<Product> suggestedList = products.size() > 6 ? products.subList(0, 6) : products;
                         
-                        ProductAdapter suggestedAdapter = new ProductAdapter(suggestedList, product -> {
-                            // Chuyển sang màn hình chi tiết
-                            Bundle bundle = new Bundle();
-                            bundle.putString("id", product.getId()); 
-                            Navigation.findNavController(view).navigate(R.id.detailFragment, bundle);
+                        ProductAdapter suggestedAdapter = new ProductAdapter(suggestedList, new ProductAdapter.OnProductListener() {
+                            @Override
+                            public void onClick(Product product) {
+                                // Chuyển sang màn hình chi tiết
+                                Bundle bundle = new Bundle();
+                                bundle.putString("id", product.getId()); 
+                                Navigation.findNavController(view).navigate(R.id.detailFragment, bundle);
+                            }
+
+                            @Override
+                            public void onAddToCart(Product product) {
+                                CartManager.add(product);
+                                Toast.makeText(getContext(), "Đã thêm " + product.getName() + " vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                                // Cập nhật lại giao diện giỏ hàng nếu cần
+                                updateTotalUI(txtTotal);
+                                if (rvCart != null && rvCart.getAdapter() != null) {
+                                    rvCart.getAdapter().notifyDataSetChanged();
+                                }
+                            }
                         });
                         rvSuggested.setAdapter(suggestedAdapter);
                     });

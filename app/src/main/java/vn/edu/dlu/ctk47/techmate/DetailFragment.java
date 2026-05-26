@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,9 +34,12 @@ public class DetailFragment extends Fragment {
     private TextView txtSpecScreen, txtSpecCPU, txtSpecRAM;
     private LinearLayout sectionColors, containerColors;
     private LinearLayout sectionVariants, containerVariants;
+    private TextView selectedVariantChip = null;
+    private TextView selectedColorChip = null;
     private ViewPager2 viewPagerImage;
     private TabLayout tabIndicator;
     private Button btnAdd;
+    private ImageView btnBack;
     private Product product;
 
     @Override
@@ -67,6 +71,7 @@ public class DetailFragment extends Fragment {
         txtSpecRAM = view.findViewById(R.id.txtSpecRAM);
         
         btnAdd = view.findViewById(R.id.btnAdd);
+        btnBack = view.findViewById(R.id.btnBack);
 
         // 2. Nhận ID sản phẩm từ Bundle
         Bundle bundle = getArguments();
@@ -77,7 +82,12 @@ public class DetailFragment extends Fragment {
             }
         }
 
-        // 3. Sự kiện MUA NGAY
+        // 3. Sự kiện Back
+        btnBack.setOnClickListener(v -> {
+            Navigation.findNavController(v).popBackStack();
+        });
+
+        // 4. Sự kiện MUA NGAY
         btnAdd.setOnClickListener(v -> {
             if (product != null) {
                 CartManager.add(product);
@@ -114,7 +124,7 @@ public class DetailFragment extends Fragment {
         List<String> images = product.getImages();
         if (images == null || images.isEmpty()) {
             images = new ArrayList<>();
-            images.add("https://via.placeholder.com/500");
+            images.add("");
         }
 
         ImageSliderAdapter adapter = new ImageSliderAdapter(images);
@@ -135,6 +145,7 @@ public class DetailFragment extends Fragment {
 
     private void setupVariants() {
         containerVariants.removeAllViews();
+        selectedVariantChip = null;
         List<String> variants = product.getVariants();
 
         if (variants == null || variants.isEmpty()) {
@@ -143,6 +154,15 @@ public class DetailFragment extends Fragment {
             sectionVariants.setVisibility(View.VISIBLE);
             for (String variantName : variants) {
                 TextView chip = createChip(variantName);
+                chip.setOnClickListener(v -> {
+                    if (selectedVariantChip != null) {
+                        selectedVariantChip.setBackgroundResource(R.drawable.bg_chip);
+                        selectedVariantChip.setTextColor(Color.BLACK);
+                    }
+                    chip.setBackgroundResource(R.drawable.bg_chip_selected);
+                    chip.setTextColor(Color.WHITE);
+                    selectedVariantChip = chip;
+                });
                 containerVariants.addView(chip);
             }
         }
@@ -150,6 +170,7 @@ public class DetailFragment extends Fragment {
 
     private void setupColors() {
         containerColors.removeAllViews();
+        selectedColorChip = null;
         List<String> colors = product.getColors();
 
         if (colors == null || colors.isEmpty()) {
@@ -158,6 +179,15 @@ public class DetailFragment extends Fragment {
             sectionColors.setVisibility(View.VISIBLE);
             for (String colorName : colors) {
                 TextView chip = createChip(colorName);
+                chip.setOnClickListener(v -> {
+                    if (selectedColorChip != null) {
+                        selectedColorChip.setBackgroundResource(R.drawable.bg_chip);
+                        selectedColorChip.setTextColor(Color.BLACK);
+                    }
+                    chip.setBackgroundResource(R.drawable.bg_chip_selected);
+                    chip.setTextColor(Color.WHITE);
+                    selectedColorChip = chip;
+                });
                 containerColors.addView(chip);
             }
         }
@@ -168,16 +198,18 @@ public class DetailFragment extends Fragment {
         chip.setText(text);
         chip.setPadding(32, 16, 32, 16);
         chip.setBackgroundResource(R.drawable.bg_chip);
-        
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         params.setMargins(0, 0, 16, 0);
         chip.setLayoutParams(params);
-        
+
         chip.setTextColor(Color.BLACK);
         chip.setTextSize(14);
+        chip.setClickable(true);
+        chip.setFocusable(true);
         return chip;
     }
 }

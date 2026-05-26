@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class CheckoutFragment extends Fragment {
     EditText edtName, edtPhone, edtEmail, edtAddress, edtNote;
     TextView txtTotal;
     Button btnSubmit;
+    ImageView btnBack;
     LinearLayout layoutBankInfo;
 
     // Cờ trạng thái: false = Đang điền form, true = Đang đợi bấm xác nhận CK
@@ -38,6 +40,11 @@ public class CheckoutFragment extends Fragment {
 
         initViews(view);
         setupTotal(); // Hiển thị tổng tiền từ giỏ hàng
+
+        // Sự kiện quay lại giỏ hàng
+        btnBack.setOnClickListener(v -> {
+            Navigation.findNavController(v).popBackStack();
+        });
 
         btnSubmit.setOnClickListener(v -> {
             if (!isWaitingForPayment) {
@@ -80,6 +87,7 @@ public class CheckoutFragment extends Fragment {
         edtNote = view.findViewById(R.id.edtNote);
         txtTotal = view.findViewById(R.id.txtCheckoutTotal);
         btnSubmit = view.findViewById(R.id.btnSubmitCheckout);
+        btnBack = view.findViewById(R.id.btnBackCheckout);
         layoutBankInfo = view.findViewById(R.id.layoutBankInfo);
     }
 
@@ -90,14 +98,29 @@ public class CheckoutFragment extends Fragment {
         txtTotal.setText(formattedTotal);
     }
 
-    // Kiểm tra xem khách đã nhập đủ thông tin bắt buộc chưa
     private boolean validateForm() {
         String name = edtName.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
         String address = edtAddress.getText().toString().trim();
 
-        if (name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng nhập đủ Tên, SĐT và Địa chỉ nhận hàng!", Toast.LENGTH_SHORT).show();
+        if (name.isEmpty()) {
+            edtName.setError("Vui lòng nhập họ tên");
+            edtName.requestFocus();
+            return false;
+        }
+        if (phone.isEmpty()) {
+            edtPhone.setError("Vui lòng nhập số điện thoại");
+            edtPhone.requestFocus();
+            return false;
+        }
+        if (!phone.matches("^(0|\\+84)[0-9]{8,9}$")) {
+            edtPhone.setError("Số điện thoại không hợp lệ");
+            edtPhone.requestFocus();
+            return false;
+        }
+        if (address.isEmpty()) {
+            edtAddress.setError("Vui lòng nhập địa chỉ nhận hàng");
+            edtAddress.requestFocus();
             return false;
         }
         return true;

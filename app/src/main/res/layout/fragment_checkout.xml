@@ -1,20 +1,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:background="@color/bg">
 
     <RelativeLayout
         android:id="@+id/headerCheckout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#D70018">
+        android:layout_height="60dp"
+        android:background="@color/primary"
+        android:elevation="6dp">
+
+        <ImageView
+            android:id="@+id/btnBackCheckout"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_back"
+            app:tint="#FFFFFF"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="Thông tin đặt hàng"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -31,19 +47,19 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <TextView android:text="Họ và tên người nhận (*)" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <TextView android:text="Họ và tên người nhận (*)" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary"/>
             <EditText android:id="@+id/edtName" android:layout_width="match_parent" android:layout_height="50dp" android:hint="VD: Mai Văn Quang" android:background="@drawable/bg_edittext_bottom_line" android:layout_marginBottom="15dp"/>
 
-            <TextView android:text="Số điện thoại (*)" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <TextView android:text="Số điện thoại (*)" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary"/>
             <EditText android:id="@+id/edtPhone" android:layout_width="match_parent" android:layout_height="50dp" android:inputType="phone" android:hint="Nhập SĐT liên hệ" android:background="@drawable/bg_edittext_bottom_line" android:layout_marginBottom="15dp"/>
 
-            <TextView android:text="Email (Không bắt buộc)" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <TextView android:text="Email (Không bắt buộc)" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary"/>
             <EditText android:id="@+id/edtEmail" android:layout_width="match_parent" android:layout_height="50dp" android:inputType="textEmailAddress" android:hint="Nhập Email để nhận hóa đơn" android:background="@drawable/bg_edittext_bottom_line" android:layout_marginBottom="15dp"/>
 
-            <TextView android:text="Địa chỉ nhận hàng (*)" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <TextView android:text="Địa chỉ nhận hàng (*)" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary"/>
             <EditText android:id="@+id/edtAddress" android:layout_width="match_parent" android:layout_height="50dp" android:hint="Số nhà, Tên đường, Phường/Xã..." android:background="@drawable/bg_edittext_bottom_line" android:layout_marginBottom="15dp"/>
 
-            <TextView android:text="Ghi chú thêm" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <TextView android:text="Ghi chú thêm" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary"/>
             <EditText android:id="@+id/edtNote" android:layout_width="match_parent" android:layout_height="50dp" android:hint="Giao giờ hành chính, gọi trước khi giao..." android:background="@drawable/bg_edittext_bottom_line" android:layout_marginBottom="25dp"/>
 
             <LinearLayout
@@ -51,14 +67,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="#E8F5E9"
+                android:background="@color/primary_light"
                 android:padding="15dp"
                 android:visibility="gone">
 
-                <TextView android:text="HƯỚNG DẪN THANH TOÁN" android:textStyle="bold" android:textColor="#2E7D32" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginBottom="10dp"/>
-                <TextView android:text="Vui lòng chuyển khoản tổng tiền vào số tài khoản dưới đây:" android:textColor="#333333" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp"/>
-                <TextView android:text="Ngân hàng: Techcombank\nSTK: 1903123456789\nChủ TK: TECHMATE STORE\nNội dung CK: [SĐT của bạn]" android:textStyle="bold" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10dp" android:lineSpacingExtra="4dp"/>
-                <TextView android:text="Nhân viên TechMate sẽ gọi điện xác nhận ngay sau khi nhận được tiền." android:textStyle="italic" android:textColor="#D70018" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:text="HƯỚNG DẪN THANH TOÁN" android:textStyle="bold" android:textColor="@color/primary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginBottom="10dp"/>
+                <TextView android:text="Vui lòng chuyển khoản tổng tiền vào số tài khoản dưới đây:" android:textColor="@color/text_primary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp"/>
+                <TextView android:text="Ngân hàng: Techcombank\nSTK: 1903123456789\nChủ TK: TECHMATE STORE\nNội dung CK: [SĐT của bạn]" android:textStyle="bold" android:textColor="@color/text_primary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10dp" android:lineSpacingExtra="4dp"/>
+                <TextView android:text="Nhân viên TechMate sẽ gọi điện xác nhận ngay sau khi nhận được tiền." android:textStyle="italic" android:textColor="@color/primary" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -69,28 +85,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
+        android:background="@color/card"
         android:orientation="vertical"
         android:padding="15dp"
-        android:elevation="10dp">
+        android:elevation="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="10dp">
-            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Tổng thanh toán:" android:textSize="16sp"/>
-            <TextView android:id="@+id/txtCheckoutTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 đ" android:textColor="#D70018" android:textSize="18sp" android:textStyle="bold"/>
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Tổng thanh toán:" android:textSize="16sp" android:textColor="@color/text_secondary"/>
+            <TextView android:id="@+id/txtCheckoutTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 đ" android:textColor="@color/primary" android:textSize="20sp" android:textStyle="bold"/>
         </LinearLayout>
 
         <Button
             android:id="@+id/btnSubmitCheckout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="52dp"
             android:text="XÁC NHẬN ĐẶT HÀNG"
-            android:backgroundTint="#D70018"
+            android:backgroundTint="@color/primary"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"/>
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"/>
     </LinearLayout>
 
 </RelativeLayout>

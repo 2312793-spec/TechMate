@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 101) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
                 startAiAssistant();
+            } else {
+                Log.w("TechMate", "Quyền hiển thị overlay bị từ chối — chatbot AI sẽ không hiển thị");
             }
         }
     }

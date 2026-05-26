@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:background="@color/bg">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -20,8 +20,8 @@
             <!-- IMAGE SLIDER -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@android:color/white">
+                android:layout_height="320dp"
+                android:background="@color/card">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPagerImage"
@@ -30,20 +30,24 @@
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabIndicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:color/transparent"
                     app:tabBackground="@drawable/dot_selector"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
-                    app:tabMaxWidth="12dp"
+                    app:tabMaxWidth="10dp"
+                    app:tabPaddingStart="4dp"
+                    app:tabPaddingEnd="4dp"
                     app:tabRippleColor="@null" />
             </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
+                android:background="@color/card"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -52,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Product Name"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -62,18 +66,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="$0.00"
-                    android:textColor="#D70018"
+                    android:textColor="@color/primary"
                     android:textSize="22sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- VARIANTS SECTION (DYNAMIC) -->
+            <!-- VARIANTS SECTION -->
             <LinearLayout
                 android:id="@+id/sectionVariants"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/white"
+                android:background="@color/card"
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:visibility="gone">
@@ -82,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phiên bản"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -93,13 +97,13 @@
                     android:orientation="horizontal" />
             </LinearLayout>
 
-            <!-- COLORS SECTION (DYNAMIC) -->
+            <!-- COLORS SECTION -->
             <LinearLayout
                 android:id="@+id/sectionColors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/white"
+                android:background="@color/card"
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:visibility="gone">
@@ -108,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Màu sắc"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -124,7 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/white"
+                android:background="@color/card"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -133,28 +137,28 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:text="Thông số kỹ thuật"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#E0E0E0"
+                    android:background="@color/divider"
                     android:divider="?android:attr/dividerHorizontal"
                     android:showDividers="middle"
                     android:stretchColumns="1">
-                    <TableRow android:background="#FFFFFF">
-                        <TextView android:layout_width="100dp" android:padding="12dp" android:text="Màn hình:" android:textColor="#333333" android:textStyle="bold" />
-                        <TextView android:id="@+id/txtSpecScreen" android:layout_width="wrap_content" android:padding="12dp" android:text="N/A" android:textColor="#000000" />
+                    <TableRow android:background="@color/card">
+                        <TextView android:layout_width="100dp" android:padding="12dp" android:text="Màn hình:" android:textColor="@color/text_primary" android:textStyle="bold" />
+                        <TextView android:id="@+id/txtSpecScreen" android:layout_width="wrap_content" android:padding="12dp" android:text="N/A" android:textColor="@color/text_primary" />
                     </TableRow>
-                    <TableRow android:background="#F8F9FA">
-                        <TextView android:layout_width="100dp" android:padding="12dp" android:text="CPU:" android:textColor="#333333" android:textStyle="bold" />
-                        <TextView android:id="@+id/txtSpecCPU" android:layout_width="wrap_content" android:padding="12dp" android:text="N/A" android:textColor="#000000" />
+                    <TableRow android:background="@color/bg">
+                        <TextView android:layout_width="100dp" android:padding="12dp" android:text="CPU:" android:textColor="@color/text_primary" android:textStyle="bold" />
+                        <TextView android:id="@+id/txtSpecCPU" android:layout_width="wrap_content" android:padding="12dp" android:text="N/A" android:textColor="@color/text_primary" />
                     </TableRow>
-                    <TableRow android:background="#FFFFFF">
-                        <TextView android:layout_width="100dp" android:padding="12dp" android:text="RAM:" android:textColor="#333333" android:textStyle="bold" />
-                        <TextView android:id="@+id/txtSpecRAM" android:layout_width="wrap_content" android:padding="12dp" android:text="N/A" android:textColor="#000000" />
+                    <TableRow android:background="@color/card">
+                        <TextView android:layout_width="100dp" android:padding="12dp" android:text="RAM:" android:textColor="@color/text_primary" android:textStyle="bold" />
+                        <TextView android:id="@+id/txtSpecRAM" android:layout_width="wrap_content" android:padding="12dp" android:text="N/A" android:textColor="@color/text_primary" />
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
@@ -164,7 +168,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/white"
+                android:background="@color/card"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -172,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mô tả sản phẩm"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -182,18 +186,32 @@
                     android:layout_marginTop="8dp"
                     android:lineSpacingExtra="4dp"
                     android:text="..."
-                    android:textColor="#333333" />
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Floating Back Button -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_back_floating"
+        android:elevation="6dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_back"
+        app:tint="@color/primary"
+        android:clickable="true"
+        android:focusable="true" />
 
     <LinearLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
+        android:background="@color/card"
         android:elevation="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -205,15 +223,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tạm tính:" android:textColor="#666666" android:textSize="12sp" />
-            <TextView android:id="@+id/txtBottomPrice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textColor="#D70018" android:textSize="18sp" android:textStyle="bold" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tạm tính:" android:textColor="@color/text_secondary" android:textSize="12sp" />
+            <TextView android:id="@+id/txtBottomPrice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textColor="@color/primary" android:textSize="18sp" android:textStyle="bold" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="#D70018"
+            android:backgroundTint="@color/primary"
             android:paddingHorizontal="32dp"
             android:text="MUA NGAY"
             android:textColor="#FFFFFF"
