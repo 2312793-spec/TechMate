@@ -8,23 +8,26 @@
     android:orientation="vertical"
     android:padding="24dp">
 
-    <!-- SỬ DỤNG LOGO.PNG TRONG Ô XANH -->
-    <ImageView
+    <!-- Logo Box - Đã sửa lỗi ô vuông và căn giữa TM tuyệt đối -->
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/logo"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/bg_logo_box"
-        android:padding="12dp"
+        android:background="@color/primary"
+        android:padding="16dp"
         android:src="@drawable/logo"
-        android:scaleType="fitCenter" />
+        app:tint="@color/white"
+        app:shapeAppearanceOverlay="@style/CircleImage"
+        android:scaleType="centerInside"
+        android:translationX="-6dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="TechMate"
-        android:textColor="@color/text_primary"
+        android:textColor="@color/primary"
         android:textSize="28sp"
         android:textStyle="bold" />
 

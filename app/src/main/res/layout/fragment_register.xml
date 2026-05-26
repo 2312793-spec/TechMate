@@ -8,16 +8,24 @@
     android:orientation="vertical"
     android:padding="24dp">
 
-    <!-- SỬ DỤNG LOGO.PNG TRONG Ô XANH -->
-    <ImageView
-        android:id="@+id/logo"
+    <!-- Logo Box - Đã căn giữa TM bằng FrameLayout và padding lệch -->
+    <FrameLayout
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/bg_logo_box"
-        android:padding="12dp"
-        android:src="@drawable/logo"
-        android:scaleType="fitCenter" />
+        android:background="@drawable/bg_logo_box">
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="8dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="26dp"
+            android:paddingBottom="18dp"
+            android:src="@drawable/logo"
+            app:tint="@color/white"
+            android:scaleType="centerInside" />
+    </FrameLayout>
 
     <TextView
         android:layout_width="wrap_content"
