@@ -53,44 +53,45 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 1. Ánh xạ View
         btnCompareFloat = view.findViewById(R.id.btnCompareFloat);
         rvCat = view.findViewById(R.id.rvCategories);
         rvBrand = view.findViewById(R.id.rvBrands);
         rvProd = view.findViewById(R.id.rvProducts);
         edtSearch = view.findViewById(R.id.edtSearch);
 
+        // Kiểm tra null cho View để tránh crash
+        if (rvCat == null || rvBrand == null || rvProd == null) return;
+
         setupRecyclerViews(view);
         setupSearch();
         loadData();
 
-        btnCompareFloat.setOnClickListener(v -> {
-            if (CompareManager.get().size() < 2) {
-                Toast.makeText(getContext(), "Chọn ít nhất 2 sản phẩm để so sánh", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Navigation.findNavController(view).navigate(R.id.compareFragment);
-        });
+        if (btnCompareFloat != null) {
+            btnCompareFloat.setOnClickListener(v -> {
+                if (CompareManager.get().size() < 2) {
+                    Toast.makeText(getContext(), "Chọn ít nhất 2 sản phẩm để so sánh", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Navigation.findNavController(view).navigate(R.id.compareFragment);
+            });
+        }
 
         updateCompareUI();
     }
 
     private void setupRecyclerViews(View view) {
-        // Categories
         rvCat.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(categoryList, category -> {
             filterByCategory(category.getId());
         });
         rvCat.setAdapter(categoryAdapter);
 
-        // Brands
         rvBrand.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         brandAdapter = new BrandAdapter(brandList, brand -> {
             filterByBrand(brand.getId());
         });
         rvBrand.setAdapter(brandAdapter);
 
-        // Products
         rvProd.setLayoutManager(new GridLayoutManager(getContext(), 2));
         productAdapter = new ProductAdapter(displayList, product -> {
             if (CompareManager.hasOne()) {
@@ -106,6 +107,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupSearch() {
+        if (edtSearch == null) return;
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -119,39 +121,37 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadData() {
-        // Load Categories
+        // Cập nhật an toàn: Sử dụng getActivity() và kiểm tra null
         ProductRepository.INSTANCE.getCategories(categories -> {
-            if (isAdded()) {
-                requireActivity().runOnUiThread(() -> {
+            if (isAdded() && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
                     categoryList.clear();
                     categoryList.addAll(categories);
-                    categoryAdapter.notifyDataSetChanged();
+                    if (categoryAdapter != null) categoryAdapter.notifyDataSetChanged();
                 });
             }
             return Unit.INSTANCE;
         });
 
-        // Load Brands
         ProductRepository.INSTANCE.getBrands(brands -> {
-            if (isAdded()) {
-                requireActivity().runOnUiThread(() -> {
+            if (isAdded() && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
                     brandList.clear();
                     brandList.addAll(brands);
-                    brandAdapter.notifyDataSetChanged();
+                    if (brandAdapter != null) brandAdapter.notifyDataSetChanged();
                 });
             }
             return Unit.INSTANCE;
         });
 
-        // Load Products
         ProductRepository.INSTANCE.getProducts(products -> {
-            if (isAdded()) {
-                requireActivity().runOnUiThread(() -> {
+            if (isAdded() && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
                     allProducts.clear();
                     allProducts.addAll(products);
                     displayList.clear();
                     displayList.addAll(products);
-                    productAdapter.notifyDataSetChanged();
+                    if (productAdapter != null) productAdapter.notifyDataSetChanged();
                 });
             }
             return Unit.INSTANCE;
@@ -183,15 +183,15 @@ public class HomeFragment extends Fragment {
             displayList.clear();
             displayList.addAll(filtered);
         }
-        productAdapter.notifyDataSetChanged();
+        if (productAdapter != null) productAdapter.notifyDataSetChanged();
     }
 
     private void updateProductDisplay(List<Product> products) {
-        if (isAdded()) {
-            requireActivity().runOnUiThread(() -> {
+        if (isAdded() && getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
                 displayList.clear();
                 displayList.addAll(products);
-                productAdapter.notifyDataSetChanged();
+                if (productAdapter != null) productAdapter.notifyDataSetChanged();
             });
         }
     }

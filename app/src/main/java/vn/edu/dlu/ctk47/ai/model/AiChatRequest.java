@@ -1,13 +1,22 @@
-package vn.edu.dlu.ctk47.AI.api;
+package vn.edu.dlu.ctk47.ai.model;
+
+import com.google.gson.annotations.SerializedName;
 
 public class AiChatRequest {
-    private String prompt;
 
-    public AiChatRequest(String prompt) {
-        this.prompt = prompt;
+    // BẮT BUỘC: Phải có chữ "message" viết thường ở đây để Python hiểu được
+    @SerializedName("message")
+    private String message;
+
+    public AiChatRequest(String message) {
+        this.message = message;
     }
 
-    // Getter và Setter
-    public String getPrompt() { return prompt; }
-    public void setPrompt(String prompt) { this.prompt = prompt; }
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
