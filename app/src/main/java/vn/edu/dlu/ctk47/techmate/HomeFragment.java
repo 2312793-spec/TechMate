@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -49,6 +51,8 @@ public class HomeFragment extends Fragment {
     private ProductAdapter productAdapter;
     private CategoryAdapter categoryAdapter;
     private BrandAdapter brandAdapter;
+
+    private final Handler searchHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -194,7 +198,8 @@ public class HomeFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                searchProducts(s.toString());
+                searchHandler.removeCallbacksAndMessages(null);
+                searchHandler.postDelayed(() -> searchProducts(s.toString()), 300);
             }
             @Override
             public void afterTextChanged(Editable s) {}

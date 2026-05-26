@@ -42,8 +42,12 @@ public class CompareFragment extends Fragment {
         List<Product> listP = CompareManager.get();
 
         if (listP == null || listP.size() < 2) {
-            Toast.makeText(getContext(), "Need 2 products to compare", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Chọn ít nhất 2 sản phẩm để so sánh", Toast.LENGTH_SHORT).show();
             return;
+        }
+
+        if (listP.size() > 2) {
+            Toast.makeText(getContext(), "Chỉ so sánh được 2 sản phẩm — đang hiển thị 2 sản phẩm đầu tiên", Toast.LENGTH_LONG).show();
         }
 
         Product p1 = listP.get(0);

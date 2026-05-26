@@ -1,7 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.TechMate" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <style name="Theme.TechMate" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">#28C8BE</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#1A9E96</item>
+        <item name="colorOnPrimaryContainer">#E0FFFE</item>
+
+        <item name="colorSecondary">#10B981</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+
+        <item name="android:colorBackground">#121212</item>
+        <item name="colorSurface">#1E1E1E</item>
+        <item name="colorOnSurface">#E5E7EB</item>
+
+        <item name="colorSecondaryContainer">#1E3A5F</item>
+        <item name="colorOnSecondaryContainer">#BAE6FD</item>
+
+        <item name="colorControlHighlight">#28C8BE</item>
+        <item name="colorAccent">#28C8BE</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
+
 </resources>

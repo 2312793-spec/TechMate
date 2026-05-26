@@ -98,14 +98,29 @@ public class CheckoutFragment extends Fragment {
         txtTotal.setText(formattedTotal);
     }
 
-    // Kiểm tra xem khách đã nhập đủ thông tin bắt buộc chưa
     private boolean validateForm() {
         String name = edtName.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
         String address = edtAddress.getText().toString().trim();
 
-        if (name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng nhập đủ Tên, SĐT và Địa chỉ nhận hàng!", Toast.LENGTH_SHORT).show();
+        if (name.isEmpty()) {
+            edtName.setError("Vui lòng nhập họ tên");
+            edtName.requestFocus();
+            return false;
+        }
+        if (phone.isEmpty()) {
+            edtPhone.setError("Vui lòng nhập số điện thoại");
+            edtPhone.requestFocus();
+            return false;
+        }
+        if (!phone.matches("^(0|\\+84)[0-9]{8,9}$")) {
+            edtPhone.setError("Số điện thoại không hợp lệ");
+            edtPhone.requestFocus();
+            return false;
+        }
+        if (address.isEmpty()) {
+            edtAddress.setError("Vui lòng nhập địa chỉ nhận hàng");
+            edtAddress.requestFocus();
             return false;
         }
         return true;
