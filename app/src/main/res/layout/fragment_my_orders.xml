@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8FAFC">
+    android:background="@color/bg">
 
     <!-- Header -->
     <LinearLayout
@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:paddingStart="8dp"
         android:paddingEnd="16dp"
-        android:background="#FFFFFF"
+        android:background="@color/card"
         android:elevation="4dp">
 
         <ImageView
@@ -31,10 +31,9 @@
             android:text="Đơn hàng của tôi"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#1F2937" />
+            android:textColor="@color/text_primary" />
     </LinearLayout>
 
-    <!-- Nội dung: RecyclerView hoặc trạng thái rỗng -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -68,7 +67,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Bạn chưa có đơn hàng nào"
                 android:textSize="16sp"
-                android:textColor="#6B7280" />
+                android:textColor="@color/text_secondary" />
         </LinearLayout>
 
         <!-- Trạng thái chưa đăng nhập -->
@@ -86,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:text="Vui lòng đăng nhập để xem đơn hàng"
                 android:textSize="16sp"
-                android:textColor="#6B7280"
+                android:textColor="@color/text_secondary"
                 android:gravity="center" />
 
             <Button
@@ -95,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Đăng nhập"
-                android:backgroundTint="#28C8BE" />
+                android:backgroundTint="@color/primary" />
         </LinearLayout>
 
         <!-- Loading -->

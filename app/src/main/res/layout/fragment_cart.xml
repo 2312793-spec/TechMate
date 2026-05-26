@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/bg">
 
     <RelativeLayout
         android:id="@+id/headerCart"
@@ -42,7 +42,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#DDDDDD"
+                android:background="@color/divider"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="15dp"/>
 
@@ -52,7 +52,7 @@
                 android:text="CÓ THỂ BẠN CŨNG THÍCH"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#333333"
+                android:textColor="@color/text_primary"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"/>
 
@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
+        android:background="@color/card"
         android:orientation="vertical"
         android:padding="15dp"
         android:elevation="10dp">
@@ -86,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Tổng thanh toán:"
+                android:textColor="@color/text_secondary"
                 android:textSize="16sp"/>
 
             <TextView
