@@ -60,7 +60,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 1. Ánh xạ View
         btnCompareFloat = view.findViewById(R.id.btnCompareFloat);
         btnProfile = view.findViewById(R.id.btnProfile);
         rvCat = view.findViewById(R.id.rvCategories);
@@ -68,26 +67,32 @@ public class HomeFragment extends Fragment {
         rvProd = view.findViewById(R.id.rvProducts);
         edtSearch = view.findViewById(R.id.edtSearch);
 
+        // Kiểm tra null cho View để tránh crash
+        if (rvCat == null || rvBrand == null || rvProd == null) return;
+
         setupRecyclerViews(view);
         setupSearch();
         loadData();
 
-        // 2. Xử lý click vào biểu tượng Profile
-        btnProfile.setOnClickListener(v -> {
-            if (AuthRepository.INSTANCE.getCurrentUser() == null) {
-                showLoginRequestDialog();
-            } else {
-                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_profileFragment);
-            }
-        });
+        if (btnProfile != null) {
+            btnProfile.setOnClickListener(v -> {
+                if (AuthRepository.INSTANCE.getCurrentUser() == null) {
+                    showLoginRequestDialog();
+                } else {
+                    Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_profileFragment);
+                }
+            });
+        }
 
-        btnCompareFloat.setOnClickListener(v -> {
-            if (CompareManager.get().size() < 2) {
-                Toast.makeText(getContext(), "Chọn ít nhất 2 sản phẩm để so sánh", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Navigation.findNavController(view).navigate(R.id.compareFragment);
-        });
+        if (btnCompareFloat != null) {
+            btnCompareFloat.setOnClickListener(v -> {
+                if (CompareManager.get().size() < 2) {
+                    Toast.makeText(getContext(), "Chọn ít nhất 2 sản phẩm để so sánh", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Navigation.findNavController(view).navigate(R.id.compareFragment);
+            });
+        }
 
         updateCompareUI();
         updateProfileIcon();
@@ -137,7 +142,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupRecyclerViews(View view) {
-        // Categories
         rvCat.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(categoryList, category -> {
             if (category == null) {
@@ -149,7 +153,6 @@ public class HomeFragment extends Fragment {
         });
         rvCat.setAdapter(categoryAdapter);
 
-        // Brands
         rvBrand.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         brandAdapter = new BrandAdapter(brandList, brand -> {
             if (brand == null) {
@@ -161,7 +164,6 @@ public class HomeFragment extends Fragment {
         });
         rvBrand.setAdapter(brandAdapter);
 
-        // Products
         rvProd.setLayoutManager(new GridLayoutManager(getContext(), 2));
         productAdapter = new ProductAdapter(displayList, new ProductAdapter.OnProductListener() {
             @Override
@@ -186,6 +188,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupSearch() {
+        if (edtSearch == null) return;
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -200,35 +203,35 @@ public class HomeFragment extends Fragment {
 
     private void loadData() {
         ProductRepository.INSTANCE.getCategories(categories -> {
-            if (isAdded()) {
-                requireActivity().runOnUiThread(() -> {
+            if (isAdded() && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
                     categoryList.clear();
                     categoryList.addAll(categories);
-                    categoryAdapter.notifyDataSetChanged();
+                    if (categoryAdapter != null) categoryAdapter.notifyDataSetChanged();
                 });
             }
             return Unit.INSTANCE;
         });
 
         ProductRepository.INSTANCE.getBrands(brands -> {
-            if (isAdded()) {
-                requireActivity().runOnUiThread(() -> {
+            if (isAdded() && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
                     brandList.clear();
                     brandList.addAll(brands);
-                    brandAdapter.notifyDataSetChanged();
+                    if (brandAdapter != null) brandAdapter.notifyDataSetChanged();
                 });
             }
             return Unit.INSTANCE;
         });
 
         ProductRepository.INSTANCE.getProducts(products -> {
-            if (isAdded()) {
-                requireActivity().runOnUiThread(() -> {
+            if (isAdded() && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
                     allProducts.clear();
                     allProducts.addAll(products);
                     displayList.clear();
                     displayList.addAll(products);
-                    productAdapter.notifyDataSetChanged();
+                    if (productAdapter != null) productAdapter.notifyDataSetChanged();
                 });
             }
             return Unit.INSTANCE;
@@ -260,15 +263,15 @@ public class HomeFragment extends Fragment {
             displayList.clear();
             displayList.addAll(filtered);
         }
-        productAdapter.notifyDataSetChanged();
+        if (productAdapter != null) productAdapter.notifyDataSetChanged();
     }
 
     private void updateProductDisplay(List<Product> products) {
-        if (isAdded()) {
-            requireActivity().runOnUiThread(() -> {
+        if (isAdded() && getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
                 displayList.clear();
                 displayList.addAll(products);
-                productAdapter.notifyDataSetChanged();
+                if (productAdapter != null) productAdapter.notifyDataSetChanged();
             });
         }
     }

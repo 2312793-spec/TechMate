@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -13,24 +14,28 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TechMate"> <!-- Đổi về theme chính của app -->
+        android:theme="@style/Theme.TechMate"
+        android:usesCleartextTraffic="true">
 
-        <!-- 1. Màn hình chính (Launcher) -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.TechMate.Splash"> <!-- Giữ Splash cho màn hình khởi đầu -->
+            android:theme="@style/Theme.TechMate.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- 2. Màn hình Đăng nhập (Khai báo riêng biệt) -->
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
 
-    </application>
+        <!-- KHAI BÁO ĐƯỜNG DẪN TUYỆT ĐỐI ĐỂ TRÁNH LỖI SAU KHI MERGE -->
+        <service
+            android:name="vn.edu.dlu.ctk47.ai.service.FloatingBubbleService"
+            android:enabled="true"
+            android:exported="false" />
 
+    </application>
 </manifest>
