@@ -9,14 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
+import java.util.Locale;
+
+import vn.edu.dlu.ctk47.techmate.model.CartItem;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     private final List<CartItem> list;
     private final OnCartChange listener;
 
-    // Constructor
     public CartAdapter(List<CartItem> list, OnCartChange listener) {
         this.list = list;
         this.listener = listener;
@@ -34,49 +38,48 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder h, int position) {
         CartItem item = list.get(position);
 
-        h.txtName.setText(item.product.name);
-        h.txtPrice.setText("$" + item.product.price);
-        h.txtQty.setText(String.valueOf(item.quantity));
+        if (item != null && item.getProduct() != null) {
+            h.txtName.setText(item.getProduct().getName());
+            h.txtPrice.setText(String.format(Locale.getDefault(), "$%.2f", item.getProduct().getPrice()));
+            h.txtQty.setText(String.valueOf(item.getQuantity()));
 
-        // ➕ Tăng số lượng
+            if (item.getProduct().getImages() != null && !item.getProduct().getImages().isEmpty()) {
+                Glide.with(h.itemView.getContext())
+                        .load(item.getProduct().getImages().get(0))
+                        .placeholder(R.drawable.logo)
+                        .into(h.img);
+            }
+        }
+
         h.btnPlus.setOnClickListener(v -> {
-            // Sử dụng getAdapterPosition() để tương thích tốt hơn
             int pos = h.getAdapterPosition();
-            if (pos != RecyclerView.NO_POSITION) {
-                list.get(pos).quantity++;
+            if (pos == RecyclerView.NO_POSITION) return;
+            CartItem currentItem = list.get(pos);
+            if (currentItem == null) return;
+            currentItem.setQuantity(currentItem.getQuantity() + 1);
+            notifyItemChanged(pos);
+            notifyTotal();
+        });
+
+        h.btnMinus.setOnClickListener(v -> {
+            int pos = h.getAdapterPosition();
+            if (pos == RecyclerView.NO_POSITION) return;
+            CartItem currentItem = list.get(pos);
+            if (currentItem == null) return;
+            if (currentItem.getQuantity() > 1) {
+                currentItem.setQuantity(currentItem.getQuantity() - 1);
                 notifyItemChanged(pos);
                 notifyTotal();
             }
         });
 
-        // ➖ Giảm số lượng
-        h.btnMinus.setOnClickListener(v -> {
-            int pos = h.getAdapterPosition();
-            if (pos != RecyclerView.NO_POSITION) {
-                if (list.get(pos).quantity > 1) {
-                    list.get(pos).quantity--;
-                    notifyItemChanged(pos);
-                    notifyTotal();
-                }
-            }
-        });
-
-        // ❌ Xóa sản phẩm khỏi giỏ hàng
         h.btnDelete.setOnClickListener(v -> {
             int pos = h.getAdapterPosition();
-            if (pos != RecyclerView.NO_POSITION) {
-                // 1. Xóa trong CartManager
-                CartManager.remove(pos);
-
-                // 2. Thông báo xóa item tại vị trí đó
-                notifyItemRemoved(pos);
-
-                // 3. Cập nhật lại dải vị trí để tránh crash IndexOutOfBoundsException
-                notifyItemRangeChanged(pos, list.size());
-
-                // 4. Cập nhật tổng tiền ở UI
-                notifyTotal();
-            }
+            if (pos == RecyclerView.NO_POSITION) return;
+            CartManager.remove(pos);
+            notifyItemRemoved(pos);
+            notifyItemRangeChanged(pos, list.size());
+            notifyTotal();
         });
     }
 
@@ -85,7 +88,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return list != null ? list.size() : 0;
     }
 
-    // Fixed Warning: Added 'public' to match Adapter visibility scope
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName, txtPrice, txtQty;
         ImageView img, btnDelete;

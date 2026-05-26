@@ -2,6 +2,7 @@ package vn.edu.dlu.ctk47.techmate;
 
 import java.util.ArrayList;
 import java.util.List;
+import vn.edu.dlu.ctk47.techmate.model.Product;
 
 public class CompareManager {
 

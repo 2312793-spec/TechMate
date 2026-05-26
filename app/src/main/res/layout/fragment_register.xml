@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Logo Box - Đã căn giữa TM bằng FrameLayout và padding lệch -->
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_logo_box">
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="8dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="26dp"
+            android:paddingBottom="18dp"
+            android:src="@drawable/logo"
+            app:tint="@color/white"
+            android:scaleType="centerInside" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Register"
+        android:textColor="@color/text_primary"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Join the TechMate community"
+        android:textColor="@color/text_secondary"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <!-- Full Name Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Họ và tên"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtFullName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext"
+            android:hint="Nguyễn Văn A"
+            android:inputType="textPersonName"
+            android:paddingHorizontal="16dp" />
+
+        <!-- Email Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtRegisterEmail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext"
+            android:hint="example@mail.com"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="16dp" />
+
+        <!-- Password Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtRegisterPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext"
+            android:hint="Minimum 6 characters"
+            android:inputType="textPassword"
+            android:paddingHorizontal="16dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/primary"
+        android:text="Register now"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Do you already have an account? "
+            android:textColor="@color/text_secondary" />
+
+        <TextView
+            android:id="@+id/txtBackToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textColor="@color/primary"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

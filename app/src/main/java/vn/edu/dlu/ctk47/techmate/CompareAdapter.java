@@ -31,16 +31,18 @@ public class CompareAdapter extends RecyclerView.Adapter<CompareAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder h, int position) {
         Spec s = list.get(position);
 
-        h.txtLabel.setText(s.label != null ? s.label : "");
-        h.txtValue1.setText(s.value1 != null ? s.value1 : "N/A");
-        h.txtValue2.setText(s.value2 != null ? s.value2 : "N/A");
+        h.txtLabel.setText(s.getKey() != null ? s.getKey() : "");
+        h.txtValue1.setText(s.getValue1() != null ? s.getValue1() : "N/A");
+        h.txtValue2.setText(s.getValue2() != null ? s.getValue2() : "N/A");
 
-        // Highlight khác biệt an toàn
+        // Highlight difference
         LinearLayout row = h.itemView.findViewById(R.id.rowRoot);
-        if (s.value1 != null && !s.value1.equals(s.value2)) {
-            row.setBackgroundColor(0xFFE0F2FE); // Xanh nhạt khi khác nhau
-        } else {
-            row.setBackgroundColor(0x00000000); // Trong suốt khi giống nhau
+        if (row != null) {
+            if (s.getValue1() != null && !s.getValue1().equals(s.getValue2())) {
+                row.setBackgroundColor(0xFFE0F2FE); // Light blue when different
+            } else {
+                row.setBackgroundColor(0x00000000); // Transparent when same
+            }
         }
     }
 
@@ -49,7 +51,7 @@ public class CompareAdapter extends RecyclerView.Adapter<CompareAdapter.ViewHold
         return list != null ? list.size() : 0;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtLabel, txtValue1, txtValue2;
 
         public ViewHolder(@NonNull View v) {

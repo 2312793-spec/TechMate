@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:paddingHorizontal="16dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_person_outline"
+            app:tint="@color/text_primary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Cài đặt tài khoản"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Name Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Họ và tên"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edtSettingsName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_edittext"
+                android:hint="Nhập họ tên"
+                android:paddingHorizontal="16dp" />
+
+            <!-- Phone Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Số điện thoại"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edtSettingsPhone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_edittext"
+                android:hint="Nhập số điện thoại"
+                android:inputType="phone"
+                android:paddingHorizontal="16dp" />
+
+            <!-- Address Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Địa chỉ"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edtSettingsAddress"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_edittext"
+                android:gravity="top"
+                android:hint="Nhập địa chỉ của bạn"
+                android:padding="16dp" />
+
+            <Button
+                android:id="@+id/btnSaveSettings"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="40dp"
+                android:backgroundTint="@color/primary"
+                android:text="Lưu thay đổi"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,228 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
 
-    <!-- SCROLL -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_above="@+id/bottomBar"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
 
-            <!-- IMAGE -->
-            <ImageView
+            <!-- IMAGE SLIDER -->
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:scaleType="centerCrop"
-                android:background="#EEEEEE"
-                android:layout_marginBottom="12dp"/>
+                android:layout_height="320dp"
+                android:background="@android:color/white">
 
-            <!-- BRAND -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Apple"
-                android:textColor="@color/primary"
-                android:textSize="14sp"/>
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPagerImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-            <!-- NAME -->
-            <TextView
-                android:id="@+id/txtName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginTop="4dp"/>
+                <!-- Refined Tab Indicator (Dots) -->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:color/transparent"
+                    app:tabBackground="@drawable/dot_selector"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabMaxWidth="10dp"
+                    app:tabPaddingStart="4dp"
+                    app:tabPaddingEnd="4dp"
+                    app:tabRippleColor="@null" />
+            </FrameLayout>
 
-            <!-- PRICE -->
-            <TextView
-                android:id="@+id/txtPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/primary"
-                android:layout_marginBottom="16dp"/>
-
-            <!-- STORAGE -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtDetailName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="256GB"
-                    android:background="@drawable/bg_chip_selected"
-                    android:padding="8dp"
-                    android:layout_marginEnd="8dp"/>
+                    android:text="Product Name"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtDetailPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="512GB"
-                    android:background="@drawable/bg_chip"
-                    android:padding="8dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1TB"
-                    android:background="@drawable/bg_chip"
-                    android:padding="8dp"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginTop="8dp"
+                    android:text="$0.00"
+                    android:textColor="@color/primary"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- COLOR TITLE -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- VARIANTS SECTION -->
+            <LinearLayout
+                android:id="@+id/sectionVariants"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Color"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginTop="8dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone">
 
-            <!-- COLOR -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phiên bản"
+                    android:textColor="#000000"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/containerVariants"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal" />
+            </LinearLayout>
+
+            <!-- COLORS SECTION -->
+            <LinearLayout
+                android:id="@+id/sectionColors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Màu sắc"
+                    android:textColor="#000000"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/containerColors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal" />
+            </LinearLayout>
+
+            <!-- SPECS TABLE -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginTop="8dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Natural"
-                    android:background="@drawable/bg_chip_selected"
-                    android:padding="8dp"
-                    android:layout_marginEnd="8dp"/>
+                    android:layout_marginBottom="12dp"
+                    android:text="Thông số kỹ thuật"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <TableLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Blue"
-                    android:background="@drawable/bg_chip"
-                    android:padding="8dp"
-                    android:layout_marginEnd="8dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Black"
-                    android:background="@drawable/bg_chip"
-                    android:padding="8dp"/>
+                    android:background="#E0E0E0"
+                    android:divider="?android:attr/dividerHorizontal"
+                    android:showDividers="middle"
+                    android:stretchColumns="1">
+                    <TableRow android:background="#FFFFFF">
+                        <TextView android:layout_width="100dp" android:padding="12dp" android:text="Màn hình:" android:textColor="#333333" android:textStyle="bold" />
+                        <TextView android:id="@+id/txtSpecScreen" android:layout_width="wrap_content" android:padding="12dp" android:text="N/A" android:textColor="#000000" />
+                    </TableRow>
+                    <TableRow android:background="#F8F9FA">
+                        <TextView android:layout_width="100dp" android:padding="12dp" android:text="CPU:" android:textColor="#333333" android:textStyle="bold" />
+                        <TextView android:id="@+id/txtSpecCPU" android:layout_width="wrap_content" android:padding="12dp" android:text="N/A" android:textColor="#000000" />
+                    </TableRow>
+                    <TableRow android:background="#FFFFFF">
+                        <TextView android:layout_width="100dp" android:padding="12dp" android:text="RAM:" android:textColor="#333333" android:textStyle="bold" />
+                        <TextView android:id="@+id/txtSpecRAM" android:layout_width="wrap_content" android:padding="12dp" android:text="N/A" android:textColor="#000000" />
+                    </TableRow>
+                </TableLayout>
             </LinearLayout>
-
-            <!-- SPEC TITLE -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Specifications"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginBottom="8dp"/>
-
-            <!-- SPEC GRID -->
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="2">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:background="@drawable/bg_card"
-                    android:padding="12dp"
-                    android:layout_margin="4dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Screen"/>
-
-                    <TextView
-                        android:id="@+id/txtSpecScreen"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:background="@drawable/bg_card"
-                    android:padding="12dp"
-                    android:layout_margin="4dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Chip"/>
-
-                    <TextView
-                        android:id="@+id/txtSpecChip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-            </GridLayout>
 
             <!-- DESCRIPTION -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Description"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="The ultimate iPhone with A17 Pro..."
-                android:textColor="@color/text_secondary"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="8dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mô tả sản phẩm"
+                    android:textColor="#000000"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDetailDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:lineSpacingExtra="4dp"
+                    android:text="..."
+                    android:textColor="#333333" />
+            </LinearLayout>
 
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    </ScrollView>
+    <!-- Floating Back Button -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_back_floating"
+        android:elevation="6dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_back"
+        app:tint="@color/primary"
+        android:clickable="true"
+        android:focusable="true" />
 
-    <!-- BOTTOM BAR -->
     <LinearLayout
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:padding="12dp"
+        android:layout_alignParentBottom="true"
         android:background="#FFFFFF"
-        android:elevation="20dp">
+        android:elevation="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
 
-        <ImageView
-            android:id="@+id/btnCompare"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/bg_circle"
-            android:padding="14dp"
-            android:src="@drawable/ic_compare"
-            app:tint="@color/primary"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tạm tính:" android:textColor="#666666" android:textSize="12sp" />
+            <TextView android:id="@+id/txtBottomPrice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textColor="@color/primary" android:textSize="18sp" android:textStyle="bold" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnAdd"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1"
-            android:layout_marginStart="12dp"
-            android:text="Add to Cart"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/primary"
+            android:paddingHorizontal="32dp"
+            android:text="MUA NGAY"
             android:textColor="#FFFFFF"
-            android:backgroundTint="@color/primary"/>
+            android:textStyle="bold" />
     </LinearLayout>
-
-</FrameLayout>
+</RelativeLayout>

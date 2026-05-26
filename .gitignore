@@ -1,16 +1,30 @@
+# Chứa các file cấu hình IDE cá nhân
 *.iml
 .gradle/
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-gradle/caches/
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-build/
+/.idea/
+!/.idea/codeStyles/
+!/.idea/copyright/
+
+# Chứa các file build tạm thời
+/build
+/*/build
 /captures
+
+# Các file rác hệ thống và Gradle daemon
+.DS_Store
 .externalNativeBuild
 .cxx
-local.properties
+gradle/daemon/
+*.bin
+*.lock
+
+# Thư mục rác Gradle (Nguyên nhân gây nặng và lỗi cache)
+gradle/android/
+gradle/caches/
+gradle/native/
+gradle/wrapper/dists/
+
+# Log và các file tạm khác
+*.log
+.navigation/

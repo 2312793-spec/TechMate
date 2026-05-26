@@ -16,7 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+
+import vn.edu.dlu.ctk47.techmate.model.Product;
 
 public class CompareFragment extends Fragment {
 
@@ -59,11 +62,11 @@ public class CompareFragment extends Fragment {
             return;
         }
 
-        txtName1.setText(p1.name != null ? p1.name : "N/A");
-        txtPrice1.setText("$" + p1.price);
+        txtName1.setText(p1.getName() != null ? p1.getName() : "N/A");
+        txtPrice1.setText(String.format(Locale.getDefault(), "$%.2f", p1.getPrice()));
 
-        txtName2.setText(p2.name != null ? p2.name : "N/A");
-        txtPrice2.setText("$" + p2.price);
+        txtName2.setText(p2.getName() != null ? p2.getName() : "N/A");
+        txtPrice2.setText(String.format(Locale.getDefault(), "$%.2f", p2.getPrice()));
 
         // =========================
         // 3. Xử lý Specs (null-safe)
@@ -71,20 +74,20 @@ public class CompareFragment extends Fragment {
         List<Spec> specList = new ArrayList<>();
         Set<String> allKeys = new HashSet<>();
 
-        if (p1.specs != null) allKeys.addAll(p1.specs.keySet());
-        if (p2.specs != null) allKeys.addAll(p2.specs.keySet());
+        if (p1.getSpecs() != null) allKeys.addAll(p1.getSpecs().keySet());
+        if (p2.getSpecs() != null) allKeys.addAll(p2.getSpecs().keySet());
 
         for (String key : allKeys) {
 
             String val1 = "N/A";
             String val2 = "N/A";
 
-            if (p1.specs != null && p1.specs.containsKey(key)) {
-                val1 = p1.specs.get(key);
+            if (p1.getSpecs() != null && p1.getSpecs().containsKey(key)) {
+                val1 = p1.getSpecs().get(key);
             }
 
-            if (p2.specs != null && p2.specs.containsKey(key)) {
-                val2 = p2.specs.get(key);
+            if (p2.getSpecs() != null && p2.getSpecs().containsKey(key)) {
+                val2 = p2.getSpecs().get(key);
             }
 
             // tránh null

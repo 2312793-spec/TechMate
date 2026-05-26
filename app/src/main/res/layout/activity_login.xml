@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="24dp"
+    android:gravity="center_horizontal"
+    android:fitsSystemWindows="true">
+
+    <!-- Nút quay lại -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back"
+            app:tint="@color/text_primary" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Logo Box - Đã căn giữa TM cân đối và chỉnh to hơn -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgLogoLogin"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/primary"
+                android:padding="12dp"
+                android:src="@drawable/logo"
+                app:shapeAppearanceOverlay="@style/CircleImage"
+                android:scaleType="centerInside"
+                android:contentDescription="TechMate Logo" />
+
+            <!-- App Title & Tagline -->
+            <TextView
+                android:id="@+id/txtLoginTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TechMate"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your tech companion"
+                android:textColor="#6B7280"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"/>
+
+            <!-- Form -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="48dp">
+
+                <TextView
+                    android:id="@+id/txtLabelUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="#111827"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <EditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:hint="student@university.edu"
+                    android:inputType="textEmailAddress"
+                    android:background="@drawable/bg_edittext"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="#1F2937"
+                    android:textSize="15sp"
+                    android:autofillHints="emailAddress"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textColor="#111827"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <EditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:hint="Enter your password"
+                    android:inputType="textPassword"
+                    android:background="@drawable/bg_edittext"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="#1F2937"
+                    android:textSize="15sp"
+                    android:autofillHints="password"/>
+
+                <Button
+                    android:id="@+id/btnLoginMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Sign In"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/primary"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="32dp"
+                    app:cornerRadius="12dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Forgot password?"
+                    android:textColor="@color/primary"
+                    android:gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/txtSwitchAuthMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Don't have an account? Register"
+                    android:gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="#4B5563"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.services)
 }
 
@@ -33,6 +34,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
@@ -41,6 +46,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.swiperefreshlayout)
 
     // Navigation
     implementation(libs.navigation.fragment)
@@ -48,6 +54,9 @@ dependencies {
 
     // SplashScreen
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // Image Loading
+    implementation(libs.glide)
 
     // Testing
     testImplementation(libs.junit)
@@ -57,4 +66,6 @@ dependencies {
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.12.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
 }

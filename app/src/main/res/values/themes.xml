@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- MAIN THEME -->
-    <style name="Theme.TechMate" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- MAIN THEME - Chuyển sang Material3 để hỗ trợ MaterialCardView -->
+    <style name="Theme.TechMate" parent="Theme.Material3.Light.NoActionBar">
         <!-- 🔥 ĐỒNG BỘ MÀU -->
         <item name="colorPrimary">#28C8BE</item>
         <item name="colorOnPrimary">#FFFFFF</item>
@@ -28,6 +28,14 @@
         <item name="colorControlHighlight">#28C8BE</item>
 
         <item name="colorAccent">#28C8BE</item>
+
+        <!-- 🔥 EDGE-TO-EDGE CONFIG -->
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
 
     </style>
 

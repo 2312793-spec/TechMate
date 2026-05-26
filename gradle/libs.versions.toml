@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.2"
+kotlin = "2.1.0"
 googleServices = "4.4.2"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -10,6 +11,8 @@ activity = "1.9.3"
 constraintlayout = "2.2.0"
 navigationFragment = "2.8.3"
 navigationUi = "2.8.3"
+glide = "4.16.0"
+swiperefreshlayout = "1.1.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -21,7 +24,12 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }

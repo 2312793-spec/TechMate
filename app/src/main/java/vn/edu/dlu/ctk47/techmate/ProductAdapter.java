@@ -3,19 +3,30 @@ package vn.edu.dlu.ctk47.techmate;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
+import java.util.Locale;
+
+import vn.edu.dlu.ctk47.techmate.model.Product;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private final List<Product> list;
-    private final OnItemClick listener;
+    private final OnProductListener listener;
 
-    public ProductAdapter(List<Product> list, OnItemClick listener) {
+    public interface OnProductListener {
+        void onClick(Product product);
+        void onAddToCart(Product product);
+    }
+
+    public ProductAdapter(List<Product> list, OnProductListener listener) {
         this.list = list;
         this.listener = listener;
     }
@@ -23,46 +34,46 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product p = list.get(position);
+        holder.txtName.setText(p.getName());
+        holder.txtPrice.setText(String.format(Locale.getDefault(), "$%.2f", p.getPrice()));
 
-        holder.txtName.setText(p.name);
-        holder.txtPrice.setText("$" + p.price);
+        // Tải ảnh từ Firebase URL bằng Glide
+        if (p.getImages() != null && !p.getImages().isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(p.getImages().get(0))
+                    .placeholder(R.drawable.logo)
+                    .into(holder.imgProduct);
+        } else {
+            holder.imgProduct.setImageResource(R.drawable.logo);
+        }
 
-        // 🔥 CLICK (QUAN TRỌNG NHẤT)
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onClick(p);
-            }
-        });
-
-        // ❌ KHÔNG DÙNG LONG CLICK nữa
-        holder.itemView.setOnLongClickListener(null);
+        holder.itemView.setOnClickListener(v -> listener.onClick(p));
+        holder.btnAddToCart.setOnClickListener(v -> listener.onAddToCart(p));
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list != null ? list.size() : 0;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtName, txtPrice;
+        final ImageView imgProduct;
+        final TextView txtName, txtPrice;
+        final View btnAddToCart;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            imgProduct = itemView.findViewById(R.id.imgProduct);
             txtName = itemView.findViewById(R.id.txtName);
             txtPrice = itemView.findViewById(R.id.txtPrice);
+            btnAddToCart = itemView.findViewById(R.id.btnAddToCartMini);
         }
-    }
-
-    public interface OnItemClick {
-        void onClick(Product product);
-        void onLongClick(Product product); // vẫn giữ để tránh lỗi compile
     }
 }
