@@ -62,6 +62,11 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        // Xử lý nút Đơn hàng của tôi
+        btnMyOrders.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_myOrdersFragment);
+        });
+
         btnLogout.setOnClickListener(v -> {
             AuthRepository.INSTANCE.logout();
             Toast.makeText(getContext(), "Đã đăng xuất", Toast.LENGTH_SHORT).show();

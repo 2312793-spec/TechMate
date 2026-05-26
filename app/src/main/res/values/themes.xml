@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- MAIN THEME -->
-    <style name="Theme.TechMate" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- MAIN THEME - Chuyển sang Material3 để hỗ trợ MaterialCardView -->
+    <style name="Theme.TechMate" parent="Theme.Material3.Light.NoActionBar">
         <!-- 🔥 ĐỒNG BỘ MÀU -->
         <item name="colorPrimary">#28C8BE</item>
         <item name="colorOnPrimary">#FFFFFF</item>

@@ -1,5 +1,25 @@
 <resources>
     <string name="app_name">TechMate</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+
+    <string name="back">Quay lại</string>
+    <string name="my_orders">Đơn hàng của tôi</string>
+    <string name="search_hint">Tìm mã đơn hoặc sản phẩm...</string>
+    <string name="notification">Thông báo</string>
+    <string name="filter">Lọc</string>
+    <string name="avatar">Ảnh đại diện</string>
+    <string name="qr_code">Mã QR</string>
+
+    <string name="not_logged_in">Bạn chưa đăng nhập</string>
+    <string name="login_to_see_orders">Vui lòng đăng nhập để xem đơn hàng</string>
+    <string name="login_now">Đăng nhập ngay</string>
+    <string name="no_orders">Chưa có đơn hàng nào</string>
+    <string name="buy_something">Hãy mua sắm ngay để thấy\nđơn hàng của bạn ở đây nhé!</string>
+    <string name="shop_now">Mua sắm ngay</string>
+    <string name="guest_info">Khách hàng</string>
+    <string name="not_updated">Chưa cập nhật</string>
+    <string name="default_money">0đ</string>
+    <string name="default_count">0</string>
+    <string name="member_rank">S-Member</string>
 </resources>
