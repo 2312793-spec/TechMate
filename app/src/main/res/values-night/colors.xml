@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Backgrounds -->
+    <color name="bg">#111827</color>
+    <color name="bg_page">#0D1117</color>
+    <color name="white">#1F2937</color>
+    <color name="card">#1F2937</color>
+
+    <!-- Text -->
+    <color name="text_primary">#F9FAFB</color>
+    <color name="text_secondary">#9CA3AF</color>
+    <color name="text_mint">#2EC4B6</color>
+
+    <!-- Dividers / borders -->
+    <color name="divider">#374151</color>
+
+    <!-- Primary light surface (e.g. bank info box) -->
+    <color name="primary_light">#0D2926</color>
+    <color name="teal_light">#0D2926</color>
+
+    <!-- Bottom nav icons when unselected -->
+    <color name="nav_color_normal">#6B7280</color>
+</resources>

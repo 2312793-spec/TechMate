@@ -23,6 +23,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import kotlin.Unit;
 import vn.edu.dlu.ctk47.techmate.model.Product;
@@ -30,18 +31,20 @@ import vn.edu.dlu.ctk47.techmate.firebase.ProductRepository;
 
 public class DetailFragment extends Fragment {
 
-    private TextView txtName, txtPrice, txtBrand, txtDescription;
-    private TextView txtSpecScreen, txtSpecChip, lblColors;
-    private LinearLayout containerColors;
+    private TextView txtDetailName, txtDetailPrice, txtBottomPrice, txtDetailDesc;
+    private TextView txtSpecScreen, txtSpecCPU, txtSpecRAM;
+    private LinearLayout sectionColors, containerColors;
+    private LinearLayout sectionVariants, containerVariants;
+    private TextView selectedVariantChip = null;
+    private TextView selectedColorChip = null;
     private ViewPager2 viewPagerImage;
     private TabLayout tabIndicator;
     private Button btnAdd;
-    private ImageView btnCompare;
-
+    private ImageView btnBack;
     private Product product;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_detail, container, false);
     }
@@ -53,16 +56,23 @@ public class DetailFragment extends Fragment {
         // 1. Ánh xạ View
         viewPagerImage = view.findViewById(R.id.viewPagerImage);
         tabIndicator = view.findViewById(R.id.tabIndicator);
-        txtName = view.findViewById(R.id.txtName);
-        txtPrice = view.findViewById(R.id.txtPrice);
-        txtBrand = view.findViewById(R.id.txtBrand);
-        txtDescription = view.findViewById(R.id.txtDescription);
-        txtSpecScreen = view.findViewById(R.id.txtSpecScreen);
-        txtSpecChip = view.findViewById(R.id.txtSpecChip);
-        lblColors = view.findViewById(R.id.lblColors);
+        txtDetailName = view.findViewById(R.id.txtDetailName);
+        txtDetailPrice = view.findViewById(R.id.txtDetailPrice);
+        txtBottomPrice = view.findViewById(R.id.txtBottomPrice);
+        txtDetailDesc = view.findViewById(R.id.txtDetailDesc);
+        
+        sectionColors = view.findViewById(R.id.sectionColors);
         containerColors = view.findViewById(R.id.containerColors);
+
+        sectionVariants = view.findViewById(R.id.sectionVariants);
+        containerVariants = view.findViewById(R.id.containerVariants);
+        
+        txtSpecScreen = view.findViewById(R.id.txtSpecScreen);
+        txtSpecCPU = view.findViewById(R.id.txtSpecCPU);
+        txtSpecRAM = view.findViewById(R.id.txtSpecRAM);
+        
         btnAdd = view.findViewById(R.id.btnAdd);
-        btnCompare = view.findViewById(R.id.btnCompare);
+        btnBack = view.findViewById(R.id.btnBack);
 
         // 2. Nhận ID sản phẩm từ Bundle
         Bundle bundle = getArguments();
@@ -73,21 +83,17 @@ public class DetailFragment extends Fragment {
             }
         }
 
-        // 3. Sự kiện Thêm vào giỏ hàng
+        // 3. Sự kiện Back
+        btnBack.setOnClickListener(v -> {
+            Navigation.findNavController(v).popBackStack();
+        });
+
+        // 4. Sự kiện MUA NGAY
         btnAdd.setOnClickListener(v -> {
             if (product != null) {
                 CartManager.add(product);
-                Toast.makeText(getContext(), "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Added to cart", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(v).navigate(R.id.cartFragment);
-            }
-        });
-
-        // 4. Sự kiện So sánh
-        btnCompare.setOnClickListener(v -> {
-            if (product != null) {
-                CompareManager.add(product);
-                Toast.makeText(getContext(), "Đã chọn để so sánh. Hãy chọn thêm 1 sản phẩm khác!", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(v).navigate(R.id.homeFragment);
             }
         });
     }
@@ -97,24 +103,8 @@ public class DetailFragment extends Fragment {
             if (p != null) {
                 this.product = p;
                 displayProduct();
-                
-                // Lấy tên thương hiệu từ Brand ID
-                if (p.getBrandId() != null) {
-                    loadBrandName(p.getBrandId());
-                }
             } else {
-                Toast.makeText(getContext(), "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT).show();
-            }
-            return Unit.INSTANCE;
-        });
-    }
-
-    private void loadBrandName(String brandId) {
-        ProductRepository.INSTANCE.getBrandById(brandId, brand -> {
-            if (brand != null && brand.getName() != null) {
-                txtBrand.setText(brand.getName());
-            } else {
-                txtBrand.setText("Unknown Brand");
+                Toast.makeText(getContext(), "Product not found", Toast.LENGTH_SHORT).show();
             }
             return Unit.INSTANCE;
         });
@@ -122,66 +112,118 @@ public class DetailFragment extends Fragment {
 
     private void displayProduct() {
         if (product == null) return;
+
+        txtDetailName.setText(product.getName());
         
-        txtName.setText(product.getName());
-        txtPrice.setText(String.format(Locale.getDefault(), "$%.2f", product.getPrice()));
-        txtDescription.setText(product.getDescription());
-        
-        // Setup Image Slider
-        List<String> images = product.getImages();
+        // Định dạng giá tiền VNĐ (%,.0f đ)
+        String formattedPrice = String.format(Locale.GERMANY, "%,.0f đ", product.getPrice());
+        txtDetailPrice.setText(formattedPrice);
+        txtBottomPrice.setText(formattedPrice);
+        txtDetailDesc.setText(product.getDescription());
+
+        // 1. Setup Image Slider (ViewPager2)
+        // SỬA LỖI: Sử dụng getImageList() thay vì getImages()
+        List<String> images = product.getImageList();
         if (images == null || images.isEmpty()) {
             images = new ArrayList<>();
-            images.add("https://via.placeholder.com/500"); 
+            images.add("");
         }
-        
+
         ImageSliderAdapter adapter = new ImageSliderAdapter(images);
         viewPagerImage.setAdapter(adapter);
-
         new TabLayoutMediator(tabIndicator, viewPagerImage, (tab, position) -> {}).attach();
 
-        // HIỂN THỊ MÀU SẮC DYNAMIC
+        // 2. Setup Phiên bản & Màu sắc (Dùng hàm bổ trợ an toàn)
+        setupVariants();
         setupColors();
 
-        // Hiển thị Specs
-        if (product.getSpecs() != null) {
-            String screen = product.getSpecs().get("Screen");
-            txtSpecScreen.setText(screen != null ? screen : "N/A");
-            
-            String chip = product.getSpecs().get("CPU");
-            txtSpecChip.setText(chip != null ? chip : "N/A");
+        // 3. Hiển thị Specs (Xử lý an toàn Any/Object)
+        Object specsObj = product.getSpecs();
+        if (specsObj instanceof Map) {
+            Map<String, String> specsMap = (Map<String, String>) specsObj;
+            txtSpecScreen.setText(specsMap.getOrDefault("Screen", "N/A"));
+            txtSpecCPU.setText(specsMap.getOrDefault("CPU", "N/A"));
+            txtSpecRAM.setText(specsMap.getOrDefault("RAM", "N/A"));
+        } else if (specsObj instanceof String) {
+            txtSpecScreen.setText((String) specsObj);
+            txtSpecCPU.setText("Xem mô tả");
+            txtSpecRAM.setText("Xem mô tả");
+        } else {
+            txtSpecScreen.setText("N/A");
+            txtSpecCPU.setText("N/A");
+            txtSpecRAM.setText("N/A");
         }
+    }
 
-        txtBrand.setText("..."); 
+    private void setupVariants() {
+        containerVariants.removeAllViews();
+        selectedVariantChip = null;
+        // Gọi hàm helper từ Kotlin để lấy List an toàn
+        List<String> variants = product.getVariantList();
+
+        if (variants == null || variants.isEmpty()) {
+            sectionVariants.setVisibility(View.GONE);
+        } else {
+            sectionVariants.setVisibility(View.VISIBLE);
+            for (String variantName : variants) {
+                TextView chip = createChip(variantName);
+                chip.setOnClickListener(v -> {
+                    if (selectedVariantChip != null) {
+                        selectedVariantChip.setBackgroundResource(R.drawable.bg_chip);
+                        selectedVariantChip.setTextColor(Color.BLACK);
+                    }
+                    chip.setBackgroundResource(R.drawable.bg_chip_selected);
+                    chip.setTextColor(Color.WHITE);
+                    selectedVariantChip = chip;
+                });
+                containerVariants.addView(chip);
+            }
+        }
     }
 
     private void setupColors() {
         containerColors.removeAllViews();
-        List<String> colors = product.getColors();
+        selectedColorChip = null;
+        // Gọi hàm helper từ Kotlin để lấy List an toàn
+        List<String> colors = product.getColorList();
 
         if (colors == null || colors.isEmpty()) {
-            lblColors.setVisibility(View.GONE);
-            containerColors.setVisibility(View.GONE);
+            sectionColors.setVisibility(View.GONE);
         } else {
-            lblColors.setVisibility(View.VISIBLE);
-            containerColors.setVisibility(View.VISIBLE);
-
+            sectionColors.setVisibility(View.VISIBLE);
             for (String colorName : colors) {
-                TextView chip = new TextView(getContext());
-                chip.setText(colorName);
-                chip.setPadding(32, 16, 32, 16);
-                chip.setBackgroundResource(R.drawable.bg_chip); // Dùng lại drawable cũ
-                
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT, 
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                params.setMargins(0, 0, 16, 0);
-                chip.setLayoutParams(params);
-                chip.setTextColor(Color.BLACK);
-                chip.setTextSize(14);
-
+                TextView chip = createChip(colorName);
+                chip.setOnClickListener(v -> {
+                    if (selectedColorChip != null) {
+                        selectedColorChip.setBackgroundResource(R.drawable.bg_chip);
+                        selectedColorChip.setTextColor(Color.BLACK);
+                    }
+                    chip.setBackgroundResource(R.drawable.bg_chip_selected);
+                    chip.setTextColor(Color.WHITE);
+                    selectedColorChip = chip;
+                });
                 containerColors.addView(chip);
             }
         }
+    }
+
+    private TextView createChip(String text) {
+        TextView chip = new TextView(getContext());
+        chip.setText(text);
+        chip.setPadding(32, 16, 32, 16);
+        chip.setBackgroundResource(R.drawable.bg_chip);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 0, 16, 0);
+        chip.setLayoutParams(params);
+
+        chip.setTextColor(Color.BLACK);
+        chip.setTextSize(14);
+        chip.setClickable(true);
+        chip.setFocusable(true);
+        return chip;
     }
 }

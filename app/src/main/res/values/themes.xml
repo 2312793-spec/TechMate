@@ -1,52 +1,39 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- MAIN THEME -->
-    <style name="Theme.TechMate" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- 🔥 ĐỒNG BỘ MÀU -->
-        <item name="colorPrimary">#28C8BE</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
+    <style name="Theme.TechMate" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/primary_light</item>
+        <item name="colorOnPrimaryContainer">@color/primary_dark</item>
 
-        <item name="colorPrimaryContainer">#28C8BE</item>
-        <item name="colorOnPrimaryContainer">#FFFFFF</item>
-
-        <!-- Secondary -->
         <item name="colorSecondary">#10B981</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorOnSecondary">@color/white</item>
 
-        <!-- Background -->
-        <item name="android:colorBackground">#F8FAFC</item>
-        <item name="colorSurface">#FFFFFF</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="colorSurface">@color/card</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
 
-        <!-- Text -->
-        <item name="colorOnSurface">#1F2937</item>
-
-        <!-- Container -->
         <item name="colorSecondaryContainer">#E0F2FE</item>
         <item name="colorOnSecondaryContainer">#1E40AF</item>
 
-        <!-- Ripple -->
-        <item name="colorControlHighlight">#28C8BE</item>
+        <item name="colorControlHighlight">@color/primary</item>
+        <item name="colorAccent">@color/primary</item>
 
-        <item name="colorAccent">#28C8BE</item>
-
+        <!-- Edge-to-edge: status bar và nav bar trong suốt, fitsSystemWindows xử lý insets -->
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
     </style>
 
-
-    <!-- 🔥 SPLASH THEME -->
     <style name="Theme.TechMate.Splash" parent="Theme.SplashScreen">
-
-        <!-- 🔥 MÀU CHUẨN -->
-        <item name="windowSplashScreenBackground">#28C8BE</item>
-
-        <!-- logo -->
+        <item name="windowSplashScreenBackground">@color/primary</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/logo_tm</item>
-
-        <!-- chuyển theme -->
         <item name="postSplashScreenTheme">@style/Theme.TechMate</item>
-
-        <!-- delay -->
         <item name="windowSplashScreenAnimationDuration">1500</item>
-
     </style>
 
 </resources>

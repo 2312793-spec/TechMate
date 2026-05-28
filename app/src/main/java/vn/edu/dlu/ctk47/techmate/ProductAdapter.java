@@ -1,6 +1,5 @@
 package vn.edu.dlu.ctk47.techmate;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+import java.util.Locale;
+
 import vn.edu.dlu.ctk47.techmate.model.Product;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private final List<Product> list;
-    private final OnItemClick listener;
+    private final OnProductListener listener;
 
-    public ProductAdapter(List<Product> list, OnItemClick listener) {
+    public interface OnProductListener {
+        void onClick(Product product);
+        void onAddToCart(Product product);
+    }
+
+    public ProductAdapter(List<Product> list, OnProductListener listener) {
         this.list = list;
         this.listener = listener;
     }
@@ -28,36 +34,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product p = list.get(position);
+        holder.txtName.setText(p.getName());
+        // Hiển thị giá tiền định dạng VNĐ (ví dụ: 20.000.000 đ)
+        holder.txtPrice.setText(String.format(Locale.GERMANY, "%,.0f đ", p.getPrice()));
 
-        if (p != null) {
-            // Log để kiểm tra dữ liệu
-            Log.d("ProductAdapter", "Binding product: " + p.getName() + " | Price: " + p.getPrice());
-            
-            holder.txtName.setText(p.getName() != null ? p.getName() : "Empty Name");
-            holder.txtPrice.setText("$" + p.getPrice());
-
-            if (p.getImages() != null && !p.getImages().isEmpty()) {
-                Glide.with(holder.itemView.getContext())
-                        .load(p.getImages().get(0))
-                        .placeholder(R.drawable.logo)
-                        .error(R.drawable.logo)
-                        .into(holder.imgProduct);
-            }
-
-            holder.itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onClick(p);
-                }
-            });
+        // SỬA LỖI: Sử dụng getImageList() thay vì getImages()
+        List<String> images = p.getImageList();
+        if (images != null && !images.isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(images.get(0))
+                    .placeholder(R.drawable.logo)
+                    .into(holder.imgProduct);
+        } else {
+            holder.imgProduct.setImageResource(R.drawable.logo);
         }
+
+        holder.itemView.setOnClickListener(v -> listener.onClick(p));
+        holder.btnAddToCart.setOnClickListener(v -> listener.onAddToCart(p));
     }
 
     @Override
@@ -66,18 +66,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtName, txtPrice;
-        ImageView imgProduct;
+        final ImageView imgProduct;
+        final TextView txtName, txtPrice;
+        final View btnAddToCart;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            imgProduct = itemView.findViewById(R.id.imgProduct);
             txtName = itemView.findViewById(R.id.txtName);
             txtPrice = itemView.findViewById(R.id.txtPrice);
-            imgProduct = itemView.findViewById(R.id.imgProduct);
+            btnAddToCart = itemView.findViewById(R.id.btnAddToCartMini);
         }
-    }
-
-    public interface OnItemClick {
-        void onClick(Product product);
     }
 }

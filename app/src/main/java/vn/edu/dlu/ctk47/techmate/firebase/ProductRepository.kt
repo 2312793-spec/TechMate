@@ -16,11 +16,23 @@ object ProductRepository {
             .get()
             .addOnSuccessListener { snapshot ->
                 val categories = snapshot.toObjects<Category>()
-                Log.d(TAG, "Fetched ${categories.size} categories")
                 callback(categories)
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "Error fetching categories: ${e.message}")
+                callback(emptyList())
+            }
+    }
+
+    fun getBrands(callback: (List<Brand>) -> Unit) {
+        FirestoreHelper.getBrandsCollection()
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val brands = snapshot.toObjects<Brand>()
+                callback(brands)
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error fetching brands: ${e.message}")
                 callback(emptyList())
             }
     }
@@ -30,7 +42,6 @@ object ProductRepository {
             .get()
             .addOnSuccessListener { snapshot ->
                 val products = snapshot.toObjects<Product>()
-                Log.d(TAG, "Fetched ${products.size} products")
                 callback(products)
             }
             .addOnFailureListener { e ->
@@ -42,6 +53,19 @@ object ProductRepository {
     fun getProductsByCategory(categoryId: String, callback: (List<Product>) -> Unit) {
         FirestoreHelper.getProductsCollection()
             .whereEqualTo("categoryId", categoryId)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val products = snapshot.toObjects<Product>()
+                callback(products)
+            }
+            .addOnFailureListener {
+                callback(emptyList())
+            }
+    }
+
+    fun getProductsByBrand(brandId: String, callback: (List<Product>) -> Unit) {
+        FirestoreHelper.getProductsCollection()
+            .whereEqualTo("brandId", brandId)
             .get()
             .addOnSuccessListener { snapshot ->
                 val products = snapshot.toObjects<Product>()

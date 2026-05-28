@@ -1,6 +1,7 @@
 package vn.edu.dlu.ctk47.techmate;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import vn.edu.dlu.ctk47.techmate.model.Product;
@@ -42,7 +44,7 @@ public class CompareFragment extends Fragment {
         List<Product> listP = CompareManager.get();
 
         if (listP == null || listP.size() < 2) {
-            Toast.makeText(getContext(), "Need 2 products to compare", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Chọn ít nhất 2 sản phẩm để so sánh", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -50,71 +52,74 @@ public class CompareFragment extends Fragment {
         Product p2 = listP.get(1);
 
         // =========================
-        // 2. Bind View (an toàn)
+        // 2. Bind View Header
         // =========================
         TextView txtName1 = view.findViewById(R.id.txtName1);
         TextView txtPrice1 = view.findViewById(R.id.txtPrice1);
         TextView txtName2 = view.findViewById(R.id.txtName2);
         TextView txtPrice2 = view.findViewById(R.id.txtPrice2);
 
-        if (txtName1 == null || txtPrice1 == null || txtName2 == null || txtPrice2 == null) {
-            Toast.makeText(getContext(), "Layout error (missing id)", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        txtName1.setText(p1.getName() != null ? p1.getName() : "N/A");
-        txtPrice1.setText(String.format(Locale.getDefault(), "$%.2f", p1.getPrice()));
-
-        txtName2.setText(p2.getName() != null ? p2.getName() : "N/A");
-        txtPrice2.setText(String.format(Locale.getDefault(), "$%.2f", p2.getPrice()));
+        if (txtName1 != null) txtName1.setText(p1.getName());
+        if (txtPrice1 != null) txtPrice1.setText(String.format(Locale.GERMANY, "%,.0f đ", p1.getPrice()));
+        if (txtName2 != null) txtName2.setText(p2.getName());
+        if (txtPrice2 != null) txtPrice2.setText(String.format(Locale.GERMANY, "%,.0f đ", p2.getPrice()));
 
         // =========================
-        // 3. Xử lý Specs (null-safe)
+        // 3. Xử lý So sánh (Specs, Colors, Variants)
         // =========================
         List<Spec> specList = new ArrayList<>();
-        Set<String> allKeys = new HashSet<>();
 
-        if (p1.getSpecs() != null) allKeys.addAll(p1.getSpecs().keySet());
-        if (p2.getSpecs() != null) allKeys.addAll(p2.getSpecs().keySet());
+        // --- A. So sánh Màu sắc & Phiên bản (Lấy an toàn từ getColorList/getVariantList) ---
+        specList.add(new Spec("Màu sắc", 
+                TextUtils.join(", ", p1.getColorList()), 
+                TextUtils.join(", ", p2.getColorList())));
+        
+        specList.add(new Spec("Phiên bản", 
+                TextUtils.join(", ", p1.getVariantList()), 
+                TextUtils.join(", ", p2.getVariantList())));
+
+        // --- B. So sánh Specs (Xử lý đa kiểu dữ liệu Map/String) ---
+        Set<String> allKeys = new HashSet<>();
+        Object s1 = p1.getSpecs();
+        Object s2 = p2.getSpecs();
+
+        if (s1 instanceof Map) allKeys.addAll(((Map<String, String>) s1).keySet());
+        if (s2 instanceof Map) allKeys.addAll(((Map<String, String>) s2).keySet());
+        
+        // Nếu là String (do Admin nhập trực tiếp), đưa vào một dòng chung
+        if (s1 instanceof String || s2 instanceof String) {
+            allKeys.add("Thông số khác");
+        }
 
         for (String key : allKeys) {
-
             String val1 = "N/A";
             String val2 = "N/A";
 
-            if (p1.getSpecs() != null && p1.getSpecs().containsKey(key)) {
-                val1 = p1.getSpecs().get(key);
+            if (s1 instanceof Map) {
+                val1 = ((Map<String, String>) s1).getOrDefault(key, "N/A");
+            } else if (s1 instanceof String && key.equals("Thông số khác")) {
+                val1 = (String) s1;
             }
 
-            if (p2.getSpecs() != null && p2.getSpecs().containsKey(key)) {
-                val2 = p2.getSpecs().get(key);
+            if (s2 instanceof Map) {
+                val2 = ((Map<String, String>) s2).getOrDefault(key, "N/A");
+            } else if (s2 instanceof String && key.equals("Thông số khác")) {
+                val2 = (String) s2;
             }
-
-            // tránh null
-            if (val1 == null) val1 = "N/A";
-            if (val2 == null) val2 = "N/A";
 
             specList.add(new Spec(key, val1, val2));
-        }
-
-        // fallback nếu không có data
-        if (specList.isEmpty()) {
-            specList.add(new Spec("Info", "No data", "No data"));
         }
 
         // =========================
         // 4. Setup RecyclerView
         // =========================
         RecyclerView rv = view.findViewById(R.id.rvCompare);
-
         if (rv != null) {
             rv.setLayoutManager(new LinearLayoutManager(getContext()));
             rv.setAdapter(new CompareAdapter(specList));
         }
 
-        // =========================
-        // 5. Clear sau khi dùng
-        // =========================
+        // Clear danh sách so sánh sau khi hiển thị
         CompareManager.clear();
     }
 }

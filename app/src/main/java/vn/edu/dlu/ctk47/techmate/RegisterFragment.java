@@ -72,8 +72,8 @@ public class RegisterFragment extends Fragment {
             AuthRepository.INSTANCE.register(newUser, password, (success, message) -> {
                 if (success) {
                     Toast.makeText(getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                    // Đăng ký xong tự động quay về Profile (hoặc Login tùy ý)
-                    Navigation.findNavController(view).popBackStack(R.id.profileFragment, false);
+                    // Đăng ký xong tự động quay về HomeFragment để cập nhật giao diện chính
+                    Navigation.findNavController(view).popBackStack(R.id.homeFragment, false);
                 } else {
                     Toast.makeText(getContext(), "Lỗi đăng ký: " + message, Toast.LENGTH_LONG).show();
                 }

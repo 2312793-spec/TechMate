@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bg"
-    android:fitsSystemWindows="true"
-
     android:padding="16dp">
 
     <!-- HEADER -->
