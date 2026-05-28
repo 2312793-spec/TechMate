@@ -59,7 +59,7 @@
         android:name="vn.edu.dlu.ctk47.techmate.LoginFragment"
         android:label="Login">
         <action
-            android:id="@+id/action_loginFragment_to_registerFragment"
+            android:id="@+id/action_fragment_login_to_register"
             app:destination="@id/registerFragment" />
     </fragment>
 
@@ -80,6 +80,14 @@
         <action
             android:id="@+id/action_myOrdersFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_myOrdersFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="vn.edu.dlu.ctk47.techmate.OrderDetailFragment"
+        android:label="Order Detail" />
 
 </navigation>

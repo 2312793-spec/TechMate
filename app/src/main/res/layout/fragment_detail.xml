@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="$0.00"
+                    android:text="0 đ"
                     android:textColor="@color/primary"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -224,7 +224,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tạm tính:" android:textColor="@color/text_secondary" android:textSize="12sp" />
-            <TextView android:id="@+id/txtBottomPrice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textColor="@color/primary" android:textSize="18sp" android:textStyle="bold" />
+            <TextView android:id="@+id/txtBottomPrice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 đ" android:textColor="@color/primary" android:textSize="18sp" android:textStyle="bold" />
         </LinearLayout>
 
         <Button

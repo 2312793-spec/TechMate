@@ -40,14 +40,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         if (item != null && item.getProduct() != null) {
             h.txtName.setText(item.getProduct().getName());
-            h.txtPrice.setText(String.format(Locale.getDefault(), "$%.2f", item.getProduct().getPrice()));
+            h.txtPrice.setText(String.format(Locale.GERMANY, "%,.0f đ", item.getProduct().getPrice()));
             h.txtQty.setText(String.valueOf(item.getQuantity()));
 
-            if (item.getProduct().getImages() != null && !item.getProduct().getImages().isEmpty()) {
+            List<String> images = item.getProduct().getImageList();
+            if (images != null && !images.isEmpty()) {
                 Glide.with(h.itemView.getContext())
-                        .load(item.getProduct().getImages().get(0))
+                        .load(images.get(0))
                         .placeholder(R.drawable.logo)
                         .into(h.img);
+            } else {
+                h.img.setImageResource(R.drawable.logo);
             }
         }
 

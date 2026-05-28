@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -22,7 +23,8 @@
             android:layout_height="48dp"
             android:padding="12dp"
             android:src="@drawable/ic_back"
-            android:contentDescription="Back" />
+            android:contentDescription="Back"
+            app:tint="@color/text_primary" />
 
         <TextView
             android:layout_width="0dp"
@@ -34,77 +36,96 @@
             android:textColor="@color/text_primary" />
     </LinearLayout>
 
-    <FrameLayout
+    <!-- SwipeRefreshLayout để làm mới danh sách đơn hàng -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshOrders"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvOrders"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="12dp"
-            android:clipToPadding="false"
-            android:visibility="gone" />
+            android:layout_height="match_parent">
 
-        <!-- Trạng thái rỗng -->
-        <LinearLayout
-            android:id="@+id/layoutEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:visibility="gone">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOrders"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:clipToPadding="false"
+                android:visibility="gone" />
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/img_mascot_shopping"
-                android:contentDescription="No orders" />
+            <!-- Trạng thái rỗng -->
+            <LinearLayout
+                android:id="@+id/layoutEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone"
+                android:padding="32dp">
 
-            <TextView
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/img_mascot_shopping"
+                    android:contentDescription="No orders" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Bạn chưa có đơn hàng nào"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_secondary" />
+
+                <Button
+                    android:id="@+id/btnGoShopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Mua sắm ngay"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/primary"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+
+            <!-- Trạng thái chưa đăng nhập -->
+            <LinearLayout
+                android:id="@+id/layoutNotLoggedIn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vui lòng đăng nhập để xem đơn hàng"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_secondary"
+                    android:gravity="center" />
+
+                <Button
+                    android:id="@+id/btnGoLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Đăng nhập"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/primary"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+
+            <!-- Loading -->
+            <ProgressBar
+                android:id="@+id/progressOrders"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Bạn chưa có đơn hàng nào"
-                android:textSize="16sp"
-                android:textColor="@color/text_secondary" />
-        </LinearLayout>
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
-        <!-- Trạng thái chưa đăng nhập -->
-        <LinearLayout
-            android:id="@+id/layoutNotLoggedIn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="32dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vui lòng đăng nhập để xem đơn hàng"
-                android:textSize="16sp"
-                android:textColor="@color/text_secondary"
-                android:gravity="center" />
-
-            <Button
-                android:id="@+id/btnGoLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Đăng nhập"
-                android:backgroundTint="@color/primary" />
-        </LinearLayout>
-
-        <!-- Loading -->
-        <ProgressBar
-            android:id="@+id/progressOrders"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-
-    </FrameLayout>
-
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -1,6 +1,8 @@
 package vn.edu.dlu.ctk47.techmate;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,13 +19,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,8 +40,9 @@ public class MyOrdersFragment extends Fragment {
     private RecyclerView rvOrders;
     private LinearLayout layoutEmpty, layoutNotLoggedIn;
     private ProgressBar progressOrders;
+    private SwipeRefreshLayout swipeRefresh;
     private ImageView btnBack;
-    private Button btnGoLogin;
+    private Button btnGoLogin, btnGoShopping;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -54,14 +58,28 @@ public class MyOrdersFragment extends Fragment {
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
         layoutNotLoggedIn = view.findViewById(R.id.layoutNotLoggedIn);
         progressOrders = view.findViewById(R.id.progressOrders);
+        swipeRefresh = view.findViewById(R.id.swipeRefreshOrders);
         btnBack = view.findViewById(R.id.btnBack);
         btnGoLogin = view.findViewById(R.id.btnGoLogin);
+        btnGoShopping = view.findViewById(R.id.btnGoShopping);
 
         btnBack.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
+        btnGoShopping.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.homeFragment));
+        btnGoLogin.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.loginFragment));
 
-        btnGoLogin.setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_myOrdersFragment_to_loginFragment));
+        swipeRefresh.setOnRefreshListener(() -> {
+            FirebaseUser user = AuthRepository.INSTANCE.getCurrentUser();
+            if (user != null) {
+                loadOrders(user.getUid());
+            } else {
+                swipeRefresh.setRefreshing(false);
+            }
+        });
 
+        checkUserAndLoadData();
+    }
+
+    private void checkUserAndLoadData() {
         FirebaseUser currentUser = AuthRepository.INSTANCE.getCurrentUser();
         if (currentUser == null) {
             showState(State.NOT_LOGGED_IN);
@@ -71,20 +89,28 @@ public class MyOrdersFragment extends Fragment {
     }
 
     private void loadOrders(String userId) {
-        showState(State.LOADING);
+        if (!swipeRefresh.isRefreshing()) {
+            showState(State.LOADING);
+        }
+
         FirebaseFirestore.getInstance()
                 .collection("orders")
                 .whereEqualTo("userId", userId)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(snapshot -> {
                     if (!isAdded()) return;
+                    swipeRefresh.setRefreshing(false);
+
                     List<Order> orders = new ArrayList<>();
                     for (QueryDocumentSnapshot doc : snapshot) {
-                        Order order = doc.toObject(Order.class);
-                        order.setId(doc.getId());
-                        orders.add(order);
+                        try {
+                            Order order = doc.toObject(Order.class);
+                            orders.add(order);
+                        } catch (Exception e) {
+                            Log.e("MyOrders", "Lỗi convert dữ liệu: " + e.getMessage());
+                        }
                     }
+
                     if (orders.isEmpty()) {
                         showState(State.EMPTY);
                     } else {
@@ -94,7 +120,10 @@ public class MyOrdersFragment extends Fragment {
                 })
                 .addOnFailureListener(e -> {
                     if (!isAdded()) return;
+                    swipeRefresh.setRefreshing(false);
                     showState(State.EMPTY);
+                    Toast.makeText(getContext(), "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.e("MyOrders", "Firestore Error: ", e);
                 });
     }
 
@@ -118,11 +147,9 @@ public class MyOrdersFragment extends Fragment {
 
     private enum State { LOADING, LOADED, EMPTY, NOT_LOGGED_IN }
 
-    // ---- Adapter nội bộ ----
     private static class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
         private final List<Order> list;
-        private final DecimalFormat fmt = new DecimalFormat("###,###,###");
-        private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
 
         OrderAdapter(List<Order> list) { this.list = list; }
 
@@ -136,12 +163,52 @@ public class MyOrdersFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull VH h, int position) {
             Order order = list.get(position);
-            h.txtOrderId.setText("Đơn #" + (order.getId() != null ? order.getId().substring(0, Math.min(8, order.getId().length())) : "N/A"));
-            h.txtOrderStatus.setText(order.getStatus() != null ? order.getStatus() : "Pending");
-            h.txtOrderAddress.setText(order.getShippingAddress() != null ? order.getShippingAddress() : "Không có địa chỉ");
-            h.txtOrderTotal.setText(fmt.format(order.getTotalPrice()).replace(",", ".") + " đ");
+
+            String displayId = order.getId();
+            if (displayId != null && displayId.length() > 8) {
+                displayId = displayId.substring(0, 8).toUpperCase();
+            }
+            h.txtOrderId.setText("Đơn hàng #" + (displayId != null ? displayId : "---"));
+
+            String status = order.getStatus();
+            h.txtOrderStatus.setText(getVietnameseStatus(status));
+            updateStatusUI(h.txtOrderStatus, status);
+
+            h.txtOrderAddress.setText(order.getAddress());
+            h.txtOrderTotal.setText(String.format(Locale.GERMANY, "%,.0f đ", order.getTotalAmount()));
+
             if (order.getTimestamp() != null) {
                 h.txtOrderDate.setText(sdf.format(new Date(order.getTimestamp())));
+            }
+
+            h.itemView.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("orderId", order.getId());
+                Navigation.findNavController(v).navigate(R.id.action_myOrdersFragment_to_orderDetailFragment, bundle);
+            });
+        }
+
+        private String getVietnameseStatus(String status) {
+            if (status == null) return "Chờ xác nhận";
+            switch (status) {
+                case "Pending": return "Chờ xác nhận";
+                case "Confirmed": return "Đã xác nhận";
+                case "Shipping": return "Đang giao hàng";
+                case "Delivered": return "Đã giao hàng";
+                case "Cancelled": return "Đã hủy";
+                default: return status;
+            }
+        }
+
+        private void updateStatusUI(TextView tv, String status) {
+            if (status == null) return;
+            switch (status) {
+                case "Pending": tv.setBackgroundColor(Color.parseColor("#FFA500")); break;
+                case "Confirmed": tv.setBackgroundColor(Color.parseColor("#2196F3")); break;
+                case "Shipping": tv.setBackgroundColor(Color.parseColor("#9C27B0")); break;
+                case "Delivered": tv.setBackgroundColor(Color.parseColor("#4CAF50")); break;
+                case "Cancelled": tv.setBackgroundColor(Color.parseColor("#F44336")); break;
+                default: tv.setBackgroundColor(Color.GRAY);
             }
         }
 

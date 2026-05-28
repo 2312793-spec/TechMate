@@ -1,7 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -17,7 +17,8 @@
         <ImageView
             android:id="@+id/imgProduct"
             android:layout_width="60dp"
-            android:layout_height="60dp" />
+            android:layout_height="60dp"
+            android:scaleType="centerInside" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -30,43 +31,55 @@
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="iPhone"
+                android:text="Tên sản phẩm"
+                android:textColor="@color/text_primary"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="$999"
-                android:textColor="@color/primary" />
+                android:text="0 đ"
+                android:textColor="@color/primary"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- QUANTITY -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/btnMinus"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:text="-"
-                android:gravity="center" />
+                android:textSize="18sp"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/txtQty"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:text="1"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:id="@+id/btnPlus"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:text="+"
-                android:gravity="center" />
+                android:textSize="18sp"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
         <ImageView
@@ -75,7 +88,7 @@
             android:layout_height="48dp"
             android:padding="12dp"
             android:src="@android:drawable/ic_menu_delete"
-            android:contentDescription="Delete item"
+            android:contentDescription="Xóa"
             android:clickable="true"
             android:focusable="true"
             app:tint="@color/red"/>

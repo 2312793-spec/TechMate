@@ -42,12 +42,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product p = list.get(position);
         holder.txtName.setText(p.getName());
-        holder.txtPrice.setText(String.format(Locale.getDefault(), "$%.2f", p.getPrice()));
+        holder.txtPrice.setText(String.format(Locale.GERMANY, "%,.0f đ", p.getPrice()));
 
-        // Tải ảnh từ Firebase URL bằng Glide
-        if (p.getImages() != null && !p.getImages().isEmpty()) {
+        List<String> images = p.getImageList();
+        if (images != null && !images.isEmpty()) {
             Glide.with(holder.itemView.getContext())
-                    .load(p.getImages().get(0))
+                    .load(images.get(0))
                     .placeholder(R.drawable.logo)
                     .into(holder.imgProduct);
         } else {

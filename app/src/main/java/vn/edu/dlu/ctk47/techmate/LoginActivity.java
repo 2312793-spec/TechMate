@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        edtEmail = findViewById(R.id.edtPhone); // ID trong layout là edtPhone nhưng dùng cho Email
+        edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         btnSubmit = findViewById(R.id.btnLoginMain);
         txtTitle = findViewById(R.id.txtLoginTitle);
@@ -86,8 +86,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void navigateToMain() {
         Intent intent = new Intent(this, MainActivity.class);
-        // FLAG_ACTIVITY_CLEAR_TOP giúp xóa các Activity nằm trên MainActivity trong stack
-        // FLAG_ACTIVITY_NEW_TASK đảm bảo khởi tạo lại một nhiệm vụ mới sạch sẽ
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

@@ -1,23 +1,30 @@
 package vn.edu.dlu.ctk47.techmate;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import java.text.DecimalFormat;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import vn.edu.dlu.ctk47.techmate.model.CartItem;
+import vn.edu.dlu.ctk47.techmate.model.Order;
+import vn.edu.dlu.ctk47.techmate.model.OrderItem;
 
 public class CheckoutFragment extends Fragment {
 
@@ -26,8 +33,9 @@ public class CheckoutFragment extends Fragment {
     Button btnSubmit;
     ImageView btnBack;
     LinearLayout layoutBankInfo;
+    RadioGroup rgPaymentMethod;
+    RadioButton rbCOD, rbBank;
 
-    // Cờ trạng thái: false = Đang điền form, true = Đang đợi bấm xác nhận CK
     boolean isWaitingForPayment = false;
 
     public CheckoutFragment() {
@@ -39,44 +47,87 @@ public class CheckoutFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initViews(view);
-        setupTotal(); // Hiển thị tổng tiền từ giỏ hàng
 
-        // Sự kiện quay lại giỏ hàng
-        btnBack.setOnClickListener(v -> {
-            Navigation.findNavController(v).popBackStack();
+        double total = CartManager.getTotal();
+        txtTotal.setText(String.format("%,.0f đ", total));
+
+        btnBack.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
+
+        rgPaymentMethod.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId != R.id.rbBank) {
+                layoutBankInfo.setVisibility(View.GONE);
+            }
         });
 
         btnSubmit.setOnClickListener(v -> {
             if (!isWaitingForPayment) {
-                // =====================================
-                // BƯỚC 1: XÁC NHẬN THÔNG TIN ĐẶT HÀNG
-                // =====================================
                 if (validateForm()) {
-                    // Hiển thị khung thông tin ngân hàng
-                    layoutBankInfo.setVisibility(View.VISIBLE);
-
-                    // Đổi chữ và màu nút bấm sang Xác nhận chuyển khoản
-                    btnSubmit.setText("TÔI ĐÃ CHUYỂN KHOẢN");
-
-                    // Đóng băng các ô nhập liệu không cho sửa nữa
-                    disableInputs();
-
-                    isWaitingForPayment = true; // Chuyển sang bước 2
+                    saveOrderToFirebase();
                 }
             } else {
-                // =====================================
-                // BƯỚC 2: XÁC NHẬN THANH TOÁN XONG
-                // =====================================
-                Toast.makeText(getContext(), "Đơn hàng đã được gửi đi! Nhân viên TechMate sẽ sớm liên hệ với bạn.", Toast.LENGTH_LONG).show();
-
-                // Xóa sạch giỏ hàng sau khi mua thành công
-                CartManager.clear();
-
-                // Điều hướng bay thẳng về màn hình Trang Chủ (HomeFragment)
-                NavController nav = Navigation.findNavController(v);
-                nav.popBackStack(R.id.homeFragment, false);
+                completeOrder();
             }
         });
+    }
+
+    private void saveOrderToFirebase() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String uid = FirebaseAuth.getInstance().getUid();
+
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (CartItem ci : CartManager.getCart()) {
+            OrderItem oi = new OrderItem();
+            oi.setProductId(ci.getProduct().getId());
+            oi.setProductName(ci.getProduct().getName());
+            oi.setQuantity(ci.getQuantity());
+            oi.setPrice(ci.getProduct().getPrice());
+
+            List<String> imgs = ci.getProduct().getImageList();
+            if (!imgs.isEmpty()) oi.setImage(imgs.get(0));
+
+            orderItems.add(oi);
+        }
+
+        String paymentMethod = rbCOD.isChecked() ? "COD" : "Bank Transfer";
+
+        Order order = new Order();
+        order.setUserId(uid);
+        order.setCustomerName(edtName.getText().toString().trim());
+        order.setAddress(edtAddress.getText().toString().trim());
+        order.setPhone(edtPhone.getText().toString().trim());
+        order.setNote(edtNote.getText().toString().trim());
+        order.setItems(orderItems);
+        order.setTotalAmount(CartManager.getTotal());
+        order.setStatus("Pending");
+        order.setPaymentMethod(paymentMethod);
+        order.setTimestamp(System.currentTimeMillis());
+
+        db.collection("orders")
+                .add(order)
+                .addOnSuccessListener(documentReference -> {
+                    String orderId = documentReference.getId();
+                    documentReference.update("id", orderId);
+
+                    if (paymentMethod.equals("Bank Transfer")) {
+                        isWaitingForPayment = true;
+                        layoutBankInfo.setVisibility(View.VISIBLE);
+                        btnSubmit.setText("TÔI ĐÃ CHUYỂN KHOẢN");
+                        rgPaymentMethod.setEnabled(false);
+                        disableInputs();
+                    } else {
+                        Toast.makeText(getContext(), "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+                        completeOrder();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Lỗi đặt hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void completeOrder() {
+        Toast.makeText(getContext(), "Cảm ơn bạn! TechMate sẽ sớm liên hệ.", Toast.LENGTH_LONG).show();
+        CartManager.clear();
+        Navigation.findNavController(requireView()).popBackStack(R.id.homeFragment, false);
     }
 
     private void initViews(View view) {
@@ -89,49 +140,34 @@ public class CheckoutFragment extends Fragment {
         btnSubmit = view.findViewById(R.id.btnSubmitCheckout);
         btnBack = view.findViewById(R.id.btnBackCheckout);
         layoutBankInfo = view.findViewById(R.id.layoutBankInfo);
-    }
-
-    private void setupTotal() {
-        double total = CartManager.getTotal();
-        DecimalFormat formatter = new DecimalFormat("###,###,###");
-        String formattedTotal = formatter.format(total).replace(",", ".") + " đ";
-        txtTotal.setText(formattedTotal);
+        rgPaymentMethod = view.findViewById(R.id.rgPaymentMethod);
+        rbCOD = view.findViewById(R.id.rbCOD);
+        rbBank = view.findViewById(R.id.rbBank);
     }
 
     private boolean validateForm() {
-        String name = edtName.getText().toString().trim();
-        String phone = edtPhone.getText().toString().trim();
-        String address = edtAddress.getText().toString().trim();
-
-        if (name.isEmpty()) {
-            edtName.setError("Vui lòng nhập họ tên");
-            edtName.requestFocus();
+        if (edtName.getText().toString().isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng nhập tên", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (phone.isEmpty()) {
-            edtPhone.setError("Vui lòng nhập số điện thoại");
-            edtPhone.requestFocus();
+        if (edtPhone.getText().toString().isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng nhập SĐT", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (!phone.matches("^(0|\\+84)[0-9]{8,9}$")) {
-            edtPhone.setError("Số điện thoại không hợp lệ");
-            edtPhone.requestFocus();
-            return false;
-        }
-        if (address.isEmpty()) {
-            edtAddress.setError("Vui lòng nhập địa chỉ nhận hàng");
-            edtAddress.requestFocus();
+        if (edtAddress.getText().toString().isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng nhập địa chỉ", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
     }
 
-    // Làm mờ các ô nhập liệu
     private void disableInputs() {
         edtName.setEnabled(false);
         edtPhone.setEnabled(false);
         edtEmail.setEnabled(false);
         edtAddress.setEnabled(false);
         edtNote.setEnabled(false);
+        rbCOD.setEnabled(false);
+        rbBank.setEnabled(false);
     }
 }

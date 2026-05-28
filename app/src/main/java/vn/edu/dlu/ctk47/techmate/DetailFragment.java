@@ -23,6 +23,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import kotlin.Unit;
 import vn.edu.dlu.ctk47.techmate.model.Product;
@@ -52,28 +53,26 @@ public class DetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 1. Ánh xạ View
         viewPagerImage = view.findViewById(R.id.viewPagerImage);
         tabIndicator = view.findViewById(R.id.tabIndicator);
         txtDetailName = view.findViewById(R.id.txtDetailName);
         txtDetailPrice = view.findViewById(R.id.txtDetailPrice);
         txtBottomPrice = view.findViewById(R.id.txtBottomPrice);
         txtDetailDesc = view.findViewById(R.id.txtDetailDesc);
-        
+
         sectionColors = view.findViewById(R.id.sectionColors);
         containerColors = view.findViewById(R.id.containerColors);
 
         sectionVariants = view.findViewById(R.id.sectionVariants);
         containerVariants = view.findViewById(R.id.containerVariants);
-        
+
         txtSpecScreen = view.findViewById(R.id.txtSpecScreen);
         txtSpecCPU = view.findViewById(R.id.txtSpecCPU);
         txtSpecRAM = view.findViewById(R.id.txtSpecRAM);
-        
+
         btnAdd = view.findViewById(R.id.btnAdd);
         btnBack = view.findViewById(R.id.btnBack);
 
-        // 2. Nhận ID sản phẩm từ Bundle
         Bundle bundle = getArguments();
         if (bundle != null) {
             String productId = bundle.getString("id");
@@ -82,12 +81,8 @@ public class DetailFragment extends Fragment {
             }
         }
 
-        // 3. Sự kiện Back
-        btnBack.setOnClickListener(v -> {
-            Navigation.findNavController(v).popBackStack();
-        });
+        btnBack.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
 
-        // 4. Sự kiện MUA NGAY
         btnAdd.setOnClickListener(v -> {
             if (product != null) {
                 CartManager.add(product);
@@ -113,15 +108,13 @@ public class DetailFragment extends Fragment {
         if (product == null) return;
 
         txtDetailName.setText(product.getName());
-        
-        // Định dạng giá tiền USD ($)
-        String formattedPrice = String.format(Locale.getDefault(), "$%.2f", product.getPrice());
+
+        String formattedPrice = String.format(Locale.GERMANY, "%,.0f đ", product.getPrice());
         txtDetailPrice.setText(formattedPrice);
         txtBottomPrice.setText(formattedPrice);
         txtDetailDesc.setText(product.getDescription());
 
-        // 1. Setup Image Slider (ViewPager2)
-        List<String> images = product.getImages();
+        List<String> images = product.getImageList();
         if (images == null || images.isEmpty()) {
             images = new ArrayList<>();
             images.add("");
@@ -131,22 +124,30 @@ public class DetailFragment extends Fragment {
         viewPagerImage.setAdapter(adapter);
         new TabLayoutMediator(tabIndicator, viewPagerImage, (tab, position) -> {}).attach();
 
-        // 2. Setup Phiên bản & Màu sắc
         setupVariants();
         setupColors();
 
-        // 3. Hiển thị Specs
-        if (product.getSpecs() != null) {
-            txtSpecScreen.setText(product.getSpecs().getOrDefault("Screen", "N/A"));
-            txtSpecCPU.setText(product.getSpecs().getOrDefault("CPU", "N/A"));
-            txtSpecRAM.setText(product.getSpecs().getOrDefault("RAM", "N/A"));
+        Object specsObj = product.getSpecs();
+        if (specsObj instanceof Map) {
+            Map<String, String> specsMap = (Map<String, String>) specsObj;
+            txtSpecScreen.setText(specsMap.getOrDefault("Screen", "N/A"));
+            txtSpecCPU.setText(specsMap.getOrDefault("CPU", "N/A"));
+            txtSpecRAM.setText(specsMap.getOrDefault("RAM", "N/A"));
+        } else if (specsObj instanceof String) {
+            txtSpecScreen.setText((String) specsObj);
+            txtSpecCPU.setText("Xem mô tả");
+            txtSpecRAM.setText("Xem mô tả");
+        } else {
+            txtSpecScreen.setText("N/A");
+            txtSpecCPU.setText("N/A");
+            txtSpecRAM.setText("N/A");
         }
     }
 
     private void setupVariants() {
         containerVariants.removeAllViews();
         selectedVariantChip = null;
-        List<String> variants = product.getVariants();
+        List<String> variants = product.getVariantList();
 
         if (variants == null || variants.isEmpty()) {
             sectionVariants.setVisibility(View.GONE);
@@ -171,7 +172,7 @@ public class DetailFragment extends Fragment {
     private void setupColors() {
         containerColors.removeAllViews();
         selectedColorChip = null;
-        List<String> colors = product.getColors();
+        List<String> colors = product.getColorList();
 
         if (colors == null || colors.isEmpty()) {
             sectionColors.setVisibility(View.GONE);
