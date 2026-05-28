@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView((int) R.layout.activity_login);
 
         // Đã sửa ID từ edtPhone thành edtEmail để khớp với activity_login.xml
         edtEmail = findViewById(R.id.edtEmail); 
