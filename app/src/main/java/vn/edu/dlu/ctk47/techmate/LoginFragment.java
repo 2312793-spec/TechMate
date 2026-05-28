@@ -42,7 +42,8 @@ public class LoginFragment extends Fragment {
         txtSignUp = view.findViewById(R.id.txtSignUp);
 
         txtSignUp.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
+            // Sửa lại ID action cho đúng với khai báo trong nav_graph.xml
+            Navigation.findNavController(view).navigate(R.id.action_fragment_login_to_register);
         });
 
         btnLogin.setOnClickListener(v -> {

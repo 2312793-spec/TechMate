@@ -62,6 +62,27 @@
             <TextView android:text="Ghi chú thêm" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary"/>
             <EditText android:id="@+id/edtNote" android:layout_width="match_parent" android:layout_height="50dp" android:hint="Giao giờ hành chính, gọi trước khi giao..." android:background="@drawable/bg_edittext_bottom_line" android:layout_marginBottom="25dp"/>
 
+            <TextView android:text="Phương thức thanh toán" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:layout_marginBottom="8dp"/>
+            <RadioGroup
+                android:id="@+id/rgPaymentMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp">
+                <RadioButton
+                    android:id="@+id/rbCOD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thanh toán khi nhận hàng (COD)"
+                    android:checked="true"
+                    android:padding="10dp"/>
+                <RadioButton
+                    android:id="@+id/rbBank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chuyển khoản ngân hàng"
+                    android:padding="10dp"/>
+            </RadioGroup>
+
             <LinearLayout
                 android:id="@+id/layoutBankInfo"
                 android:layout_width="match_parent"
