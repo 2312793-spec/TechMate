@@ -205,6 +205,7 @@
         app:tint="@color/primary"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless" />
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:visibility="gone" />
 
 </FrameLayout>

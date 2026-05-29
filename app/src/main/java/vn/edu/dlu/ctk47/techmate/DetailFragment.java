@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
@@ -158,7 +159,7 @@ public class DetailFragment extends Fragment {
                 chip.setOnClickListener(v -> {
                     if (selectedVariantChip != null) {
                         selectedVariantChip.setBackgroundResource(R.drawable.bg_chip);
-                        selectedVariantChip.setTextColor(Color.BLACK);
+                        selectedVariantChip.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary));
                     }
                     chip.setBackgroundResource(R.drawable.bg_chip_selected);
                     chip.setTextColor(Color.WHITE);
@@ -183,7 +184,7 @@ public class DetailFragment extends Fragment {
                 chip.setOnClickListener(v -> {
                     if (selectedColorChip != null) {
                         selectedColorChip.setBackgroundResource(R.drawable.bg_chip);
-                        selectedColorChip.setTextColor(Color.BLACK);
+                        selectedColorChip.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary));
                     }
                     chip.setBackgroundResource(R.drawable.bg_chip_selected);
                     chip.setTextColor(Color.WHITE);
@@ -207,7 +208,7 @@ public class DetailFragment extends Fragment {
         params.setMargins(0, 0, 16, 0);
         chip.setLayoutParams(params);
 
-        chip.setTextColor(Color.BLACK);
+        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary));
         chip.setTextSize(14);
         chip.setClickable(true);
         chip.setFocusable(true);
